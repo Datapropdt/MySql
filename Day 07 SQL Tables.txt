@@ -1,0 +1,210 @@
+SQL CREATE Table
+Creating a basic table involves naming the table and defining its columns and each column's data type.
+The SQL CREATE TABLE statement is used to create a new table.
+Syntax:
+Basic syntax of CREATE TABLE statement is as follows:
+CREATE TABLE table_name(
+ column1 datatype,
+ column2 datatype,
+ column3 datatype,
+ .....
+ columnN datatype,
+ PRIMARY KEY( one or more columns )
+);
+CREATE TABLE is the keyword telling the database system what you want to do. In this case, you want to create 
+a new table. The unique name or identifier for the table follows the CREATE TABLE statement.
+Then in brackets comes the list defining each column in the table and what sort of data type it is. The syntax 
+becomes clearer with an example below.
+A copy of an existing table can be created using a combination of the CREATE TABLE statement and the SELECT 
+statement. You can check complete details at Create Table Using another Table.
+Create Table Using another Table
+A copy of an existing table can be created using a combination of the CREATE TABLE statement and the SELECT 
+statement.
+The new table has the same column definitions. All columns or specific columns can be selected.
+When you create a new table using existing table, new table would be populated using existing values in the old 
+table.
+Syntax:
+The basic syntax for creating a table from another table is as follows:
+  
+CREATE TABLE NEW_TABLE_NAME AS
+ SELECT [ column1, column2...columnN ]
+ FROM EXISTING_TABLE_NAME
+ [ WHERE ]
+Here, column1, column2...are the fields of existing table and same would be used to create fields of new table.
+Example:
+Following is an example, which would create a table SALARY using CUSTOMERS table and having fields 
+customer ID and customer SALARY:
+SQL> CREATE TABLE SALARY AS
+ SELECT ID, SALARY
+ FROM CUSTOMERS;
+This would create new table SALARY, which would have the following records:
++----+----------+
+| ID | SALARY |
++----+----------+
+| 1 | 2000.00 |
+| 2 | 1500.00 |
+| 3 | 2000.00 |
+| 4 | 6500.00 |
+| 5 | 8500.00 |
+| 6 | 4500.00 |
+| 7 | 10000.00 |
++----+----------+
+Example:
+Following is an example, which creates a CUSTOMERS table with ID as primary key and NOT NULL are the 
+constraints showing that these fileds can not be NULL while creating records in this table:
+SQL> CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2), 
+ PRIMARY KEY (ID)
+);
+You can verify if your table has been created successfully by looking at the message displayed by the SQL server,
+otherwise you can use DESC command as follows:
+SQL> DESC CUSTOMERS;
++---------+---------------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++---------+---------------+------+-----+---------+-------+
+| ID | int(11) | NO | PRI | | |
+| NAME | varchar(20) | NO | | | |
+| AGE | int(11) | NO | | | |
+| ADDRESS | char(25) | YES | | NULL | |
+| SALARY | decimal(18,2) | YES | | NULL | |
++---------+---------------+------+-----+---------+-------+
+  
+5 rows in set (0.00 sec)
+Now, you have CUSTOMERS table available in your database which you can use to store required information 
+related to customers.
+  
+SQL DROP or DELETE Table
+The SQL DROP TABLE statement is used to remove a table definition and all data, indexes, triggers, 
+constraints, and permission specifications for that table.
+NOTE: You have to be careful while using this command because once a table is deleted then all the information 
+available in the table would also be lost forever.
+Syntax:
+Basic syntax of DROP TABLE statement is as follows:
+DROP TABLE table_name;
+Example:
+Let us first verify CUSTOMERS table and then we would delete it from the database:
+SQL> DESC CUSTOMERS;
++---------+---------------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++---------+---------------+------+-----+---------+-------+
+| ID | int(11) | NO | PRI | | |
+| NAME | varchar(20) | NO | | | |
+| AGE | int(11) | NO | | | |
+| ADDRESS | char(25) | YES | | NULL | |
+| SALARY | decimal(18,2) | YES | | NULL | |
++---------+---------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+This means CUSTOMERS table is available in the database, so let us drop it as follows:
+SQL> DROP TABLE CUSTOMERS;
+Query OK, 0 rows affected (0.01 sec)
+Now, if you would try DESC command, then you would get error as follows:
+SQL> DESC CUSTOMERS;
+ERROR 1146 (42S02): Table 'TEST.CUSTOMERS' doesn't exist
+Here, TEST is database name which we are using for our examples.
+
+  
+SQL INSERT Query
+The SQL INSERT INTO Statement is used to add new rows of data to a table in the database.
+Syntax:
+There are two basic syntaxes of INSERT INTO statement as follows:
+INSERT INTO TABLE_NAME (column1, column2, column3,...columnN)] 
+VALUES (value1, value2, value3,...valueN);
+Here, column1, column2,...columnN are the names of the columns in the table into which you want to insert data.
+You may not need to specify the column(s) name in the SQL query if you are adding values for all the columns of 
+the table. But make sure the order of the values is in the same order as the columns in the table. The SQL INSERT 
+INTO syntax would be as follows:
+INSERT INTO TABLE_NAME VALUES (value1,value2,value3,...valueN);
+Example:
+Following statements would create six records in CUSTOMERS table:
+INSERT INTO CUSTOMERS (ID,NAME,AGE,ADDRESS,SALARY)
+VALUES (1, 'Ramesh', 32, 'Ahmedabad', 2000.00 );
+INSERT INTO CUSTOMERS (ID,NAME,AGE,ADDRESS,SALARY)
+VALUES (2, 'Khilan', 25, 'Delhi', 1500.00 );
+INSERT INTO CUSTOMERS (ID,NAME,AGE,ADDRESS,SALARY)
+VALUES (3, 'kaushik', 23, 'Kota', 2000.00 );
+INSERT INTO CUSTOMERS (ID,NAME,AGE,ADDRESS,SALARY)
+VALUES (4, 'Chaitali', 25, 'Mumbai', 6500.00 );
+INSERT INTO CUSTOMERS (ID,NAME,AGE,ADDRESS,SALARY)
+VALUES (5, 'Hardik', 27, 'Bhopal', 8500.00 );
+INSERT INTO CUSTOMERS (ID,NAME,AGE,ADDRESS,SALARY)
+VALUES (6, 'Komal', 22, 'MP', 4500.00 );
+You can create a record in CUSTOMERS table using second syntax as follows:
+
+  
+INSERT INTO CUSTOMERS 
+VALUES (7, 'Muffy', 24, 'Indore', 10000.00 );
+All the above statements would produce the following records in CUSTOMERS table:
++----+----------+-----+-----------+----------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+-----------+----------+
+| 1 | Ramesh | 32 | Ahmedabad | 2000.00 |
+| 2 | Khilan | 25 | Delhi | 1500.00 |
+| 3 | kaushik | 23 | Kota | 2000.00 |
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
+| 6 | Komal | 22 | MP | 4500.00 |
+| 7 | Muffy | 24 | Indore | 10000.00 |
++----+----------+-----+-----------+----------+
+Populate one table using another table:
+You can populate data into a table through select statement over another table provided another table has a set of 
+fields, which are required to populate first table. Here is the syntax:
+INSERT INTO first_table_name [(column1, column2, ... columnN)]
+ SELECT column1, column2, ...columnN 
+ FROM second_table_name
+ [WHERE condition];
+  
+SQL SELECT Query
+SQL SELECT Statement is used to fetch the data from a database table which returns data in the form of 
+result table. These result tables are called result-sets.
+Syntax:
+The basic syntax of SELECT statement is as follows:
+SELECT column1, column2, columnN FROM table_name;
+Here, column1, column2...are the fields of a table whose values you want to fetch. If you want to fetch all the fields 
+available in the field, then you can use the following syntax:
+SELECT * FROM table_name;
+Example:
+Consider the CUSTOMERS table having the following records:
++----+----------+-----+-----------+----------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+-----------+----------+
+| 1 | Ramesh | 32 | Ahmedabad | 2000.00 |
+| 2 | Khilan | 25 | Delhi | 1500.00 |
+| 3 | kaushik | 23 | Kota | 2000.00 |
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
+| 6 | Komal | 22 | MP | 4500.00 |
+| 7 | Muffy | 24 | Indore | 10000.00 |
++----+----------+-----+-----------+----------+
+Following is an example, which would fetch ID, Name and Salary fields of the customers available in 
+CUSTOMERS table:
+SQL> SELECT ID, NAME, SALARY FROM CUSTOMERS;
+This would produce the following result:
++----+----------+----------+
+| ID | NAME | SALARY |
++----+----------+----------+
+| 1 | Ramesh | 2000.00 |
+| 2 | Khilan | 1500.00 |
+| 3 | kaushik | 2000.00 |
+| 4 | Chaitali | 6500.00 |
+| 5 | Hardik | 8500.00 |
+| 6 | Komal | 4500.00 |
+| 7 | Muffy | 10000.00 |
++----+----------+----------+
+If you want to fetch all the fields of CUSTOMERS table, then use the following query:
+SQL> SELECT * FROM CUSTOMERS;
+This would produce the following result:
++----+----------+-----+-----------+----------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+-----------+----------+
+| 1 | Ramesh | 32 | Ahmedabad | 2000.00 |
+| 2 | Khilan | 25 | Delhi | 1500.00 |
+| 3 | kaushik | 23 | Kota | 2000.00 |
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
+| 6 | Komal | 22 | MP | 4500.00 |
+| 7 | Muffy | 24 | Indore | 10000.00 |
++----+----------+-----+-----------+----------+

@@ -1,0 +1,70 @@
+SQL data type is an attribute that specifies type of data of any object. Each column, variable and expression 
+has related data type in SQL.
+
+Exact Numeric Data Types:
+DATA TYPE 		FROM 				TO
+Bigint 		-9,223,372,036,854,775,808 		9,223,372,036,854,775,807
+Int 		-2,147,483,648 			2,147,483,647
+Smallint 		-32,768 				32,767
+Tinyint 		0 				255
+Bit 		0 				1
+Decimal 		-10^38 +1 				10^38 -1
+Numeric 		-10^38 +1 				10^38 -1
+Money 		-922,337,203,685,477.5808 		+922,337,203,685,477.5807
+Smallmoney 	-214,748.3648 			+214,748.3647
+
+------------------------------------------------------------------------------------------------------------------------
+
+Approximate Numeric Data Types:
+DATA TYPE 		FROM 				TO
+Float 		-1.79E + 308 				1.79E + 308
+Real 		-3.40E + 38 				3.40E + 38
+
+------------------------------------------------------------------------------------------------------------------------
+
+Date and Time Data Types:
+DATA TYPE 		FROM 				TO
+Datetime 			Jan 1, 1753 			Dec 31, 9999
+Smalldatetime 		Jan 1, 1900 			Jun 6, 2079
+Date Stores a date like June 30, 1991
+Time Stores a time of day like 12:30 P.M.
+
+Note: Here, datetime has 3.33 milliseconds accuracy where as smalldatetime has 1 minute accuracy.
+------------------------------------------------------------------------------------------------------------------------
+
+Character Strings Data Types:
+DATA TYPE 		FROM 			TO
+Char 			Char 		Maximum length of 8,000 characters.( Fixed 					length non-Unicode 
+					characters)
+Varchar 			Varchar 		Maximum of 8,000 characters.(Variable-							length non-Unicode data).
+Text 			text 		Variable-length non-Unicode data with a 					maximum length of 									2,147,483,647 characters.
+
+------------------------------------------------------------------------------------------------------------------------
+
+Unicode Character Strings Data Types:
+DATA TYPE 			Description
+Nchar 			Maximum length of 4,000 characters.( Fixed length Unicode)
+Nvarchar 			Maximum length of 4,000 characters.(Variable length Unicode)
+nvarchar(max) 		Maximum length of 231characters (SQL Server 2005 only).( 					Variable length Unicode)
+Ntext 			Maximum length of 1,073,741,823 characters. ( Variable length 					Unicode )
+
+------------------------------------------------------------------------------------------------------------------------
+
+Binary Data Types:
+DATA TYPE 			Description
+Binary 			Maximum length of 8,000 bytes(Fixed-length binary data )
+Varbinary 			Maximum length of 8,000 bytes.(Variable length binary data)
+varbinary(max) 		Maximum length of 231 bytes (SQL Server 2005 only). ( Variable length Binary 
+			data)
+Image 			Maximum length of 2,147,483,647 bytes. ( Variable length Binary Data)
+------------------------------------------------------------------------------------------------------------------------
+
+Misc Data Types:
+DATA TYPE 		Description
+sql_variant 		Stores values of various SQL Server-supported data types, except text, ntext,and timestamp.
+timestamp 			Stores a database-wide unique number that gets updated every time a row gets updated
+uniqueidentifier 		Stores a globally unique identifier (GUID)
+xml 			Stores XML data. You can store xml instances in a column or a variable (SQL Server 2005 only).
+cursor 			Reference to a cursor object table Stores a result set for later processing.
+------------------------------------------------------------------------------------------------------------------------
+

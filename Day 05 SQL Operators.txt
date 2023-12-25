@@ -1,0 +1,266 @@
+An operator is a reserved word or a character used primarily in an SQL statement's WHERE clause to 
+perform operation(s), such as comparisons and arithmetic operations.
+Operators are used to specify conditions in an SQL statement and to serve as conjunctions for multiple conditions 
+in a statement.
+* Arithmetic operators
+* Comparison operators
+* Logical operators
+* Operators used to negate conditions
+
+------------------------------------------------------------------------------------------------------------------------
+
+SQL Arithmetic Operators:
+
+Operator Description Example
++ Addition          	- Adds values on either side of the operator a + b will give 30
+- Subtraction      	- Subtracts right hand operand from left hand operand a - b will give -10
+* Multiplication 	- Multiplies values on either side of the operator a * b will give 200
+/ Division 		- Divides left hand operand by right hand operand b / a will give 2
+% Modulus 	- Divides left hand operand by right hand operand and returns remainder b % a will give 0
+
+
+SQL> select 10+ 20;
++--------+
+| 10+ 20 |
++--------+
+| 30 |
++--------+
+1 row in set (0.00 sec)
+SQL> select 10 * 20;
++---------+
+| 10 * 20 |
++---------+
+| 200 |
++---------+
+1 row in set (0.00 sec)
+SQL> select 10 / 5;
++--------+
+| 10 / 5 |
++--------+
+| 2.0000 |
++--------+
+1 row in set (0.03 sec)
+SQL> select 12 % 5;
++---------+
+| 12 % 5 |
++---------+
+| 2 |
++---------+
+1 row in set (0.00 sec)
+
+------------------------------------------------------------------------------------------------------------------------
+SQL Comparison Operators:
+
+Operator Description Example
+= 	Checks if the values of two operands are equal or not, if yes then condition becomes true. (a = b) is not true.
+!=	 Checks if the values of two operands are equal or not, if values are not equal then condition becomes true.
+	(a != b) is true.
+<> 	Checks if the values of two operands are equal or not, if values are not equal then condition becomes true.
+	(a <> b) is true.
+> 	Checks if the value of left operand is greater than the value of right operand, if yes then condition becomes true.
+	(a > b) is not true.
+< 	Checks if the value of left operand is less than the value of right operand, if yes then condition becomes true.
+	(a < b) is true.
+>= 	Checks if the value of left operand is greater than or equal to the value of right operand, if yes then condition 	becomes true.
+	(a >= b) is not true.
+<= 	Checks if the value of left operand is less than or equal to the value of right operand, if yes then condition 	becomes true.
+	(a <= b) is true.
+!< 	Checks if the value of left operand is not less than the value of right operand, if yes then condition becomes true.
+	(a !< b) is false.
+!> 	Checks if the value of left operand is not greater than the value of right operand, if yes then condition becomes 	true.
+	(a !> b) is true.
+
+
+SQL> SELECT * FROM CUSTOMERS;
++----+----------+-----+-----------+----------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+-----------+----------+
+| 1 | Ramesh | 32 | Ahmedabad | 2000.00 |
+| 2 | Khilan | 25 | Delhi | 1500.00 |
+| 3 | kaushik | 23 | Kota | 2000.00 |
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
+| 6 | Komal | 22 | MP | 4500.00 |
+| 7 | Muffy | 24 | Indore | 10000.00 |
++----+----------+-----+-----------+----------+
+7 rows in set (0.00 sec)
+
+SQL Comparison Operators:
+SQL> SELECT * FROM CUSTOMERS WHERE SALARY > 5000;
++----+----------+-----+---------+----------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+---------+----------+
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
+| 7 | Muffy | 24 | Indore | 10000.00 |
++----+----------+-----+---------+----------+
+3 rows in set (0.00 sec)
+SQL> SELECT * FROM CUSTOMERS WHERE SALARY = 2000;
++----+---------+-----+-----------+---------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+---------+-----+-----------+---------+
+| 1 | Ramesh | 32 | Ahmedabad | 2000.00 |
+| 3 | kaushik | 23 | Kota | 2000.00 |
++----+---------+-----+-----------+---------+
+2 rows in set (0.00 sec)
+SQL> SELECT * FROM CUSTOMERS WHERE SALARY != 2000;
++----+----------+-----+---------+----------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+---------+----------+
+| 2 | Khilan | 25 | Delhi | 1500.00 |
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
+| 6 | Komal | 22 | MP | 4500.00 |
+| 7 | Muffy | 24 | Indore | 10000.00 |
++----+----------+-----+---------+----------+
+5 rows in set (0.00 sec)
+SQL> SELECT * FROM CUSTOMERS WHERE SALARY <> 2000;
++----+----------+-----+---------+----------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+---------+----------+
+| 2 | Khilan | 25 | Delhi | 1500.00 |
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
+| 6 | Komal | 22 | MP | 4500.00 |
+| 7 | Muffy | 24 | Indore | 10000.00 |
++----+----------+-----+---------+----------+
+5 rows in set (0.00 sec)
+SQL> SELECT * FROM CUSTOMERS WHERE SALARY >= 6500;
++----+----------+-----+---------+----------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+---------+----------+
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
+| 7 | Muffy | 24 | Indore | 10000.00 |
++----+----------+-----+---------+----------+
+3 rows in set (0.00 sec)
+
+------------------------------------------------------------------------------------------------------------------------
+
+SQL Logical Operators:
+
+Operator 		Description
+ALL 		The ALL operator is used to compare a value to all values in another value set.
+AND 		The AND operator allows the existence of multiple conditions in an SQL statement's WHERE clause.
+ANY 		The ANY operator is used to compare a value to any applicable value in the list according to the 
+		condition.
+BETWEEN 	The BETWEEN operator is used to search for values that are within a set of values, given the 
+		minimum value and the maximum value.
+EXISTS 		The EXISTS operator is used to search for the presence of a row in a specified table that meets 
+		certain criteria.
+IN 		The IN operator is used to compare a value to a list of literal values that have been specified.
+LIKE 		The LIKE operator is used to compare a value to similar values using wildcard operators.
+NOT 		The NOT operator reverses the meaning of the logical operator with which it is used. Eg: NOT 
+		EXISTS, NOT BETWEEN, NOT IN, etc. This is a negate operator.
+OR 		The OR operator is used to combine multiple conditions in an SQL statement's WHERE clause.
+IS NULL 		The NULL operator is used to compare a value with a NULL value.
+UNIQUE 		The UNIQUE operator searches every row of a specified table for uniqueness (no duplicates).
+
+
+
+SQL> SELECT * FROM CUSTOMERS;
++----+----------+-----+-----------+----------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+-----------+----------+
+| 1 | Ramesh | 32 | Ahmedabad | 2000.00 |
+| 2 | Khilan | 25 | Delhi | 1500.00 |
+| 3 | kaushik | 23 | Kota | 2000.00 |
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
+| 6 | Komal | 22 | MP | 4500.00 |
+| 7 | Muffy | 24 | Indore | 10000.00 |
++----+----------+-----+-----------+----------+
+7 rows in set (0.00 sec)
+
+SQL> SELECT * FROM CUSTOMERS WHERE AGE >= 25 AND SALARY >= 6500;
++----+----------+-----+---------+---------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+---------+---------+
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
++----+----------+-----+---------+---------+
+2 rows in set (0.00 sec)
+SQL> SELECT * FROM CUSTOMERS WHERE AGE >= 25 OR SALARY >= 6500;
++----+----------+-----+-----------+----------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+-----------+----------+
+| 1 | Ramesh | 32 | Ahmedabad | 2000.00 |
+| 2 | Khilan | 25 | Delhi | 1500.00 |
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
+| 7 | Muffy | 24 | Indore | 10000.00 |
++----+----------+-----+-----------+----------+
+5 rows in set (0.00 sec)
+SQL> SELECT * FROM CUSTOMERS WHERE AGE IS NOT NULL;
++----+----------+-----+-----------+----------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+-----------+----------+
+| 1 | Ramesh | 32 | Ahmedabad | 2000.00 |
+| 2 | Khilan | 25 | Delhi | 1500.00 |
+| 3 | kaushik | 23 | Kota | 2000.00 |
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
+| 6 | Komal | 22 | MP | 4500.00 |
+| 7 | Muffy | 24 | Indore | 10000.00 |
++----+----------+-----+-----------+----------+
+7 rows in set (0.00 sec)
+SQL> SELECT * FROM CUSTOMERS WHERE NAME LIKE 'Ko%';
++----+-------+-----+---------+---------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+-------+-----+---------+---------+
+| 6 | Komal | 22 | MP | 4500.00 |
++----+-------+-----+---------+---------+
+1 row in set (0.00 sec)
+SQL> SELECT * FROM CUSTOMERS WHERE AGE IN ( 25, 27 );
++----+----------+-----+---------+---------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+---------+---------+
+| 2 | Khilan | 25 | Delhi | 1500.00 |
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
++----+----------+-----+---------+---------+
+3 rows in set (0.00 sec)
+SQL> SELECT * FROM CUSTOMERS WHERE AGE BETWEEN 25 AND 27;
++----+----------+-----+---------+---------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+---------+---------+
+| 2 | Khilan | 25 | Delhi | 1500.00 |
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
++----+----------+-----+---------+---------+
+3 rows in set (0.00 sec)
+SQL> SELECT AGE FROM CUSTOMERS 
+WHERE EXISTS (SELECT AGE FROM CUSTOMERS WHERE SALARY > 6500);
++-----+
+| AGE |
++-----+
+| 32 |
+| 25 |
+| 23 |
+| 25 |
+| 27 |
+| 22 |
+| 24 |
++-----+
+7 rows in set (0.02 sec)
+SQL> SELECT * FROM CUSTOMERS 
+WHERE AGE > ALL (SELECT AGE FROM CUSTOMERS WHERE SALARY > 6500);
++----+--------+-----+-----------+---------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+--------+-----+-----------+---------+
+| 1 | Ramesh | 32 | Ahmedabad | 2000.00 |
++----+--------+-----+-----------+---------+
+1 row in set (0.02 sec)
+SQL> SELECT * FROM CUSTOMERS 
+WHERE AGE > ANY (SELECT AGE FROM CUSTOMERS WHERE SALARY > 6500);
++----+----------+-----+-----------+---------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+-----------+---------+
+| 1 | Ramesh | 32 | Ahmedabad | 2000.00 |
+| 2 | Khilan | 25 | Delhi | 1500.00 |
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
++----+----------+-----+-----------+---------+
+4 rows in set (0.00 sec)
+
+------------------------------------------------------------------------------------------------------------------------

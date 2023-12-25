@@ -1,0 +1,169 @@
+SQL ORDER BY Clause:
+The SQL ORDER BY clause is used to sort the data in ascending or descending order, based on one or more columns. Some database sorts query results in ascending order by default.
+
+Syntax: 
+SELECT column-list  
+FROM table_name  
+[WHERE condition]  
+[ORDER BY column1, column2, .. columnN] [ASC | DESC];
+
+Example: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     
+| AGE | ADDRESS   
+| SALARY   
+| 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     
+|  1500.00 | 
+|  3 | kaushik  |  23 | Kota      
+|  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  6 | Komal    |  22 | MP        
+|  4500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+
+
+SQL> SELECT * FROM CUSTOMERS 
+ORDER BY NAME, SALARY;
+
++----+----------+-----+-----------+----------+
+| ID | NAME     | AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  3 | kaushik  |  23 | Kota      |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     |  1500.00 | 
+|  6 | Komal    |  22 | MP        |  4500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
++----+----------+-----+-----------+----------+ 
+
+
+
+SQL> SELECT * FROM CUSTOMERS 
+ORDER BY NAME DESC; 
+This would produce the following result: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME   | AGE | ADDRESS   | SALARY     | 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
+|  6 | Komal    |  22 | MP        |  4500.00 | 
+|  2 | Khilan   |  25 | Delhi     |  1500.00 | 
+|  3 | kaushik  |  23 | Kota      |  2000.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
++----+----------+-----+-----------+----------+ 
+
+------------------------------------------------------------------------------------------------
+
+SQL Group By 
+The SQL GROUP BY clause is used in collaboration with the SELECT statement to arrange identical data into groups. 
+
+
+Syntax: 
+SELECT column1, column2 
+FROM table_name 
+WHERE [ conditions ] 
+GROUP BY column1, column2 
+ORDER BY column1, column2
+
+Example:
+Consider the CUSTOMERS table having the following records:
++----+----------+-----+-----------+----------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+-----------+----------+
+| 1 | Ramesh | 32 | Ahmedabad | 2000.00 |
+| 2 | Khilan | 25 | Delhi | 1500.00 |
+| 3 | kaushik | 23 | Kota | 2000.00 |
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
+| 6 | Komal | 22 | MP | 4500.00 |
+| 7 | Muffy | 24 | Indore | 10000.00 |
++----+----------+-----+-----------+----------+
+
+
+SQL> SELECT NAME, SUM(SALARY) FROM CUSTOMERS GROUP BY NAME;
+
++----------+-------------+
+| NAME | SUM(SALARY) |
++----------+-------------+
+| Chaitali | 6500.00 |
+| Hardik | 8500.00 |
+| kaushik | 2000.00 |
+| Khilan | 1500.00 |
+| Komal | 4500.00 |
+| Muffy | 10000.00 |
+| Ramesh | 2000.00 |
++----------+-------------+
+
+SQL> SELECT NAME, SUM(SALARY) FROM CUSTOMERS  GROUP BY NAME;
+This would produce the following result:
++---------+-------------+
+| NAME | SUM(SALARY) |
++---------+-------------+
+| Hardik | 8500.00 |
+| kaushik | 8500.00 |
+| Komal | 4500.00 |
+| Muffy | 10000.00 |
+| Ramesh | 3500.00 |
++---------+-------------+
+
+------------------------------------------------------------------------------------
+SQL Distinct Keyword
+The SQL DISTINCT keyword is used in conjunction with SELECT statement to eliminate all the duplicate 
+records and fetching only unique records.
+There may be a situation when you have multiple duplicate records in a table. While fetching such records, it 
+makes more sense to fetch only unique records instead of fetching duplicate records.
+Syntax:
+The basic syntax of DISTINCT keyword to eliminate duplicate records is as follows:
+SELECT DISTINCT column1, column2,.....columnN 
+FROM table_name
+WHERE [condition]
+
+Example:
+
++----+----------+-----+-----------+----------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+-----------+----------+
+| 1 | Ramesh | 32 | Ahmedabad | 2000.00 |
+| 2 | Khilan | 25 | Delhi | 1500.00 |
+| 3 | kaushik | 23 | Kota | 2000.00 |
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
+| 6 | Komal | 22 | MP | 4500.00 |
+| 7 | Muffy | 24 | Indore | 10000.00 |
++----+----------+-----+-----------+----------+
+
+
+
+SQL> SELECT SALARY FROM CUSTOMERS ORDER BY SALARY;
+
++----------+
+| SALARY |
++----------+
+| 1500.00 |
+| 2000.00 |
+| 2000.00 |
+| 4500.00 |
+| 6500.00 |
+| 8500.00 |
+| 10000.00 |
++----------+
+
+SQL> SELECT DISTINCT SALARY FROM CUSTOMERS
+ ORDER BY SALARY;
+
++----------+
+| SALARY |
++----------+
+| 1500.00 |
+| 2000.00 |
+| 4500.00 |
+| 6500.00 |
+| 8500.00 |
+| 10000.00 |
++----------+

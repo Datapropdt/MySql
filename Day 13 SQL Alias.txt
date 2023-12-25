@@ -1,0 +1,432 @@
+The use of table aliases means to rename a table in a particular SQL statement. The renaming is a temporary 
+change and the actual table name does not change in the database. 
+The column aliases are used to rename a table's columns for the purpose of a particular SQL query. 
+Syntax: 
+The basic syntax of table alias is as follows: 
+SELECT column1, column2.... 
+FROM table_name AS alias_name 
+WHERE [condition]; 
+The basic syntax of column alias is as follows: 
+SELECT column_name AS alias_name 
+FROM table_name 
+WHERE [condition]; 
+Example: 
+Consider the following two tables, (a) CUSTOMERS table is as follows: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     | AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     |  1500.00 | 
+|  3 | kaushik  |  23 | Kota      |  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  6 | Komal    |  22 | MP        |  4500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+ 
+(b) Another table is ORDERS as follows: 
+ 
++-----+---------------------+-------------+--------+ 
+|OID  | DATE                | CUSTOMER_ID | AMOUNT | 
++-----+---------------------+-------------+--------+ 
+| 102 | 2009-10-08 00:00:00 |           3 |   3000 | 
+| 100 | 2009-10-08 00:00:00 |           3 |   1500 | 
+| 101 | 2009-11-20 00:00:00 |           2 |   1560 | 
+| 103 | 2008-05-20 00:00:00 |           4 |   2060 | 
++-----+---------------------+-------------+--------+ 
+Now, following is the usage of table alias: 
+SQL> SELECT C.ID, C.NAME, C.AGE, O.AMOUNT  
+        FROM CUSTOMERS AS C, ORDERS AS O 
+        WHERE  C.ID = O.CUSTOMER_ID; 
+This would produce the following result: 
++----+----------+-----+--------+ 
+| ID | NAME     | AGE | AMOUNT | 
++----+----------+-----+--------+ 
+|  3 | kaushik  |  23 |   3000 | 
+|  3 | kaushik  |  23 |   1500 | 
+|  2 | Khilan   |  25 |   1560 | 
+|  4 | Chaitali |  25 |   2060 | 
++----+----------+-----+--------+ 
+Following is the usage of column alias: 
+SQL> SELECT  ID AS CUSTOMER_ID, NAME AS CUSTOMER_NAME 
+     FROM CUSTOMERS 
+     WHERE SALARY IS NOT NULL; 
+This would produce the following result: 
++-------------+---------------+ 
+| CUSTOMER_ID | CUSTOMER_NAME | 
++-------------+---------------+ 
+|           1 | Ramesh        | 
+|           2 | Khilan        | 
+|           3 | kaushik       | 
+|           4 | Chaitali      | 
+|           5 | Hardik        | 
+|           6 | Komal         | 
+|           7 | Muffy         | 
++-------------+---------------+ 
+  
+----------------------------------------------------------------------------------------------------
+SQL Indexes 
+Indexes are special lookup tables that the database search engine can use to speed up data retrieval. Simply 
+put, an index is a pointer to data in a table. An index in a database is very similar to an index in the back of a book. 
+For example, if you want to reference all pages in a book that discuss a certain topic, you first refer to the index, 
+which lists all topics alphabetically and are then referred to one or more specific page numbers. 
+An index helps speed up SELECT queries and WHERE clauses, but it slows down data input, with UPDATE and 
+INSERT statements. Indexes can be created or dropped with no effect on the data. 
+Creating an index involves the CREATE INDEX statement, which allows you to name the index, to specify the 
+table and which column or columns to index, and to indicate whether the index is in ascending or descending 
+order. 
+Indexes can also be unique, similar to the UNIQUE constraint, in that the index prevents duplicate entries in the 
+column or combination of columns on which there's an index. 
+The CREATE INDEX Command: 
+The basic syntax of CREATE INDEX is as follows: 
+CREATE INDEX index_name ON table_name; 
+Single-Column Indexes: 
+A single-column index is one that is created based on only one table column. The basic syntax is as follows: 
+CREATE INDEX index_name 
+ON table_name (column_name); 
+Unique Indexes: 
+Unique indexes are used not only for performance, but also for data integrity. A unique index does not allow any 
+duplicate values to be inserted into the table. The basic syntax is as follows: 
+CREATE INDEX index_name 
+on table_name (column_name); 
+ 
+ 
+Composite Indexes: 
+A composite index is an index on two or more columns of a table. The basic syntax is as follows: 
+CREATE INDEX index_name 
+on table_name (column1, column2); 
+Whether to create a single-column index or a composite index, take into consideration the column(s) that you may 
+use very frequently in a query's WHERE clause as filter conditions. 
+Should there be only one column used, a single-column index should be the choice. Should there be two or more 
+columns that are frequently used in the WHERE clause as filters, the composite index would be the best choice. 
+Implicit Indexes: 
+Implicit indexes are indexes that are automatically created by the database server when an object is created. 
+Indexes are automatically created for primary key constraints and unique constraints. 
+The DROP INDEX Command: 
+An index can be dropped using SQL DROP command. Care should be taken when dropping an index because 
+performance may be slowed or improved. 
+The basic syntax is as follows: 
+DROP INDEX index_name; 
+You can check INDEX Constraint chapter to see actual examples on Indexes. 
+When should indexes be avoided? 
+Although indexes are intended to enhance a database's performance, there are times when they should be 
+avoided. The following guidelines indicate when the use of an index should be reconsidered: 
+*  Indexes should not be used on small tables. 
+*  Tables that have frequent, large batch update or insert operations. 
+*  Indexes should not be used on columns that contain a high number of NULL values. 
+*  Columns that are frequently manipulated should not be indexed. 
+ 
+
+----------------------------------------------------------------------------------------------------
+
+SQL ALTER TABLE Command 
+The SQL ALTER TABLE command is used to add, delete or modify columns in an existing table. 
+You would also use ALTER TABLE command to add and drop various constraints on an existing table. 
+Syntax: 
+The basic syntax of ALTER TABLE to add a new column in an existing table is as follows: 
+ALTER TABLE table_name ADD column_name datatype; 
+The basic syntax of ALTER TABLE to DROP COLUMN in an existing table is as follows: 
+ALTER TABLE table_name DROP COLUMN column_name; 
+The basic syntax of ALTER TABLE to change the DATA TYPE of a column in a table is as follows: 
+ALTER TABLE table_name MODIFY COLUMN column_name datatype; 
+The basic syntax of ALTER TABLE to add a NOT NULL constraint to a column in a table is as follows: 
+ALTER TABLE table_name MODIFY column_name datatype NOT NULL; 
+The basic syntax of ALTER TABLE to ADD UNIQUE CONSTRAINT to a table is as follows: 
+ALTER TABLE table_name  
+ADD CONSTRAINT MyUniqueConstraint UNIQUE(column1, column2...); 
+The basic syntax of ALTER TABLE to ADD CHECK CONSTRAINT to a table is as follows: 
+ALTER TABLE table_name  
+ADD CONSTRAINT MyUniqueConstraint CHECK (CONDITION); 
+The basic syntax of ALTER TABLE to ADD PRIMARY KEY constraint to a table is as follows: 
+ALTER TABLE table_name  
+ADD CONSTRAINT MyPrimaryKey PRIMARY KEY (column1, column2...); 
+The basic syntax of ALTER TABLE to DROP CONSTRAINT from a table is as follows: 
+ 
+ 
+ 
+ 
+ 
+ 
+ALTER TABLE table_name  
+DROP CONSTRAINT MyUniqueConstraint; 
+If you're using MySQL, the code is as follows: 
+ALTER TABLE table_name  
+DROP INDEX MyUniqueConstraint; 
+The basic syntax of ALTER TABLE to DROP PRIMARY KEY constraint from a table is as follows: 
+ALTER TABLE table_name  
+DROP CONSTRAINT MyPrimaryKey; 
+If you're using MySQL, the code is as follows: 
+ALTER TABLE table_name  
+DROP PRIMARY KEY; 
+Example: 
+Consider the CUSTOMERS table having the following records: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     | AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     |  1500.00 | 
+|  3 | kaushik  |  23 | Kota      |  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  6 | Komal    |  22 | MP        |  4500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+ 
+Following is the example to ADD a new column in an existing table: 
+ALTER TABLE CUSTOMERS ADD SEX char(1); 
+Now, CUSTOMERS table is changed and following would be output from SELECT statement: 
++----+---------+-----+-----------+----------+------+ 
+| ID | NAME    | AGE | ADDRESS   | SALARY   | SEX  | 
++----+---------+-----+-----------+----------+------+ 
+|  1 | Ramesh  |  32 | Ahmedabad |  2000.00 | NULL | 
+|  2 | Ramesh  |  25 | Delhi     |  1500.00 | NULL | 
+|  3 | kaushik |  23 | Kota      |  2000.00 | NULL | 
+|  4 | kaushik |  25 | Mumbai    |  6500.00 | NULL | 
+|  5 | Hardik  |  27 | Bhopal    |  8500.00 | NULL | 
+|  6 | Komal   |  22 | MP        |  4500.00 | NULL | 
+|  7 | Muffy   |  24 | Indore    | 10000.00 | NULL | 
++----+---------+-----+-----------+----------+------+ 
+Following is the example to DROP sex column from existing table: 
+ALTER TABLE CUSTOMERS DROP SEX; 
+Now, CUSTOMERS table is changed and following would be output from SELECT statement: 
++----+---------+-----+-----------+----------+ 
+| ID | NAME    | AGE | ADDRESS   | SALARY   | 
++----+---------+-----+-----------+----------+ 
+|  1 | Ramesh  |  32 | Ahmedabad |  2000.00 | 
+|  2 | Ramesh  |  25 | Delhi     |  1500.00 | 
+|  3 | kaushik |  23 | Kota      |  2000.00 | 
+|  4 | kaushik |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik  |  27 | Bhopal    |  8500.00 | 
+|  6 | Komal   |  22 | MP        |  4500.00 | 
+|  7 | Muffy   |  24 | Indore    | 10000.00 | 
++----+---------+-----+-----------+----------+ 
+ 
+SQL TRUNCATE TABLE 
+The SQL TRUNCATE TABLE command is used to delete complete data from an existing table. 
+You can also use DROP TABLE command to delete complete table but it would remove complete table structure 
+form the database and you would need to re-create this table once again if you wish you store some data. 
+Syntax: 
+The basic syntax of TRUNCATE TABLE is as follows: 
+TRUNCATE TABLE  table_name; 
+Example: 
+Consider the CUSTOMERS table having the following records: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     | AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     |  1500.00 | 
+|  3 | kaushik  |  23 | Kota      |  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  6 | Komal    |  22 | MP        |  4500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+ 
+Following is the example to truncate: 
+SQL > TRUNCATE TABLE CUSTOMERS; 
+Now, CUSTOMERS table is truncated and following would be the output from SELECT statement: 
+SQL> SELECT * FROM CUSTOMERS; 
+Empty set (0.00 sec) 
+---------------------------------------------------------------------------------------------------- 
+SQL - Using Views 
+Aview is nothing more than a SQL statement that is stored in the database with an associated name. A 
+view is actually a composition of a table in the form of a predefined SQL query. 
+A view can contain all rows of a table or select rows from a table. A view can be created from one or many tables 
+which depends on the written SQL query to create a view. 
+Views, which are kind of virtual tables, allow users to do the following: 
+*  Structure data in a way that users or classes of users find natural or intuitive. 
+*  Restrict access to the data such that a user can see and (sometimes) modify exactly what they need and no 
+more. 
+*  Summarize data from various tables which can be used to generate reports. 
+Creating Views: 
+Database views are created using the CREATE VIEW statement. Views can be created from a single table, 
+multiple tables, or another view. 
+To create a view, a user must have the appropriate system privilege according to the specific implementation. 
+The basic CREATE VIEW syntax is as follows: 
+CREATE VIEW view_name AS 
+SELECT column1, column2..... 
+FROM table_name 
+WHERE [condition]; 
+You can include multiple tables in your SELECT statement in very similar way as you use them in normal SQL 
+SELECT query. 
+Example: 
+Consider the CUSTOMERS table having the following records: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     
+| AGE | ADDRESS   
+| SALARY   
+| 
+ 
+ 
+ 
+ 
+ 
+ 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     |  1500.00 | 
+|  3 | kaushik  |  23 | Kota      |  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  6 | Komal    |  22 | MP        |  4500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+ 
+Now, following is the example to create a view from CUSTOMERS table. This view would be used to have 
+customer name and age from CUSTOMERS table: 
+SQL > CREATE VIEW CUSTOMERS_VIEW AS 
+SELECT name, age 
+FROM  CUSTOMERS; 
+Now, you can query CUSTOMERS_VIEW in similar way as you query an actual table. Following is the example: 
+SQL > SELECT * FROM CUSTOMERS_VIEW; 
+This would produce the following result: 
++----------+-----+ 
+| name     | age | 
++----------+-----+ 
+| Ramesh   |  32 | 
+| Khilan   |  25 | 
+| kaushik  |  23 | 
+| Chaitali |  25 | 
+| Hardik   |  27 | 
+| Komal    |  22 | 
+| Muffy    |  24 | 
++----------+-----+ 
+The WITH CHECK OPTION: 
+The WITH CHECK OPTION is a CREATE VIEW statement option. The purpose of the WITH CHECK OPTION is 
+to ensure that all UPDATE and INSERTs satisfy the condition(s) in the view definition. 
+If they do not satisfy the condition(s), the UPDATE or INSERT returns an error. 
+The following is an example of creating same view CUSTOMERS_VIEW with the WITH CHECK OPTION: 
+CREATE VIEW CUSTOMERS_VIEW AS 
+SELECT name, age 
+FROM  CUSTOMERS 
+WHERE age IS NOT NULL 
+WITH CHECK OPTION; 
+The WITH CHECK OPTION in this case should deny the entry of any NULL values in the view's AGE column, 
+because the view is defined by data that does not have a NULL value in the AGE column. 
+Updating a View: 
+A view can be updated under certain conditions: 
+*  
+*  
+*  
+*  
+*  
+*  
+*  
+*  
+*  
+*  
+The SELECT clause may not contain the keyword DISTINCT. 
+The SELECT clause may not contain summary functions. 
+The SELECT clause may not contain set functions. 
+The SELECT clause may not contain set operators. 
+The SELECT clause may not contain an ORDER BY clause. 
+The FROM clause may not contain multiple tables. 
+The WHERE clause may not contain subqueries. 
+The query may not contain GROUP BY or HAVING. 
+Calculated columns may not be updated. 
+All NOT NULL columns from the base table must be included in the view in order for the INSERT query to 
+function. 
+So if a view satisfies all the abovementioned rules then you can update a view. Following is an example to update 
+the age of Ramesh: 
+SQL > UPDATE CUSTOMERS_VIEW 
+SET AGE = 35 
+WHERE name='Ramesh'; 
+This would ultimately update the base table CUSTOMERS and same would reflect in the view itself. Now, try to 
+query base table, and SELECT statement would produce the following result: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     
+| AGE | ADDRESS   
+| SALARY   
+| 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  35 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     
+|  1500.00 | 
+|  3 | kaushik  |  23 | Kota      
+|  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  6 | Komal    |  22 | MP        
+|  4500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+ 
+Inserting Rows into a View: 
+Rows of data can be inserted into a view. The same rules that apply to the UPDATE command also apply to the 
+INSERT command. 
+Here, we can not insert rows in CUSTOMERS_VIEW because we have not included all the NOT NULL columns in 
+this view, otherwise you can insert rows in a view in similar way as you insert them in a table. 
+ 
+ 
+Deleting Rows into a View: 
+Rows of data can be deleted from a view. The same rules that apply to the UPDATE and INSERT commands 
+apply to the DELETE command. 
+Following is an example to delete a record having AGE= 22. 
+SQL > DELETE FROM CUSTOMERS_VIEW 
+WHERE age = 22; 
+This would ultimately delete a row from the base table CUSTOMERS and same would reflect in the view itself. 
+Now, try to query base table, and SELECT statement would produce the following result: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     
+| AGE | ADDRESS   
+| SALARY   
+| 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  35 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     
+|  1500.00 | 
+|  3 | kaushik  |  23 | Kota      
+|  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+ 
+Dropping Views: 
+Obviously, where you have a view, you need a way to drop the view if it is no longer needed. The syntax is very 
+simple as given below: 
+DROP VIEW view_name; 
+Following is an example to drop CUSTOMERS_VIEW from CUSTOMERS table: 
+DROP VIEW CUSTOMERS_VIEW; 
+
+
+---------------------------------------------------------------------------------------------------
+SQL HAVING CLAUSE 
+The HAVING clause enables you to specify conditions that filter which group results appear in the final 
+results. 
+The WHERE clause places conditions on the selected columns, whereas the HAVING clause places conditions on 
+groups created by the GROUP BY clause. 
+Syntax: 
+The following is the position of the HAVING clause in a query: 
+SELECT 
+FROM 
+WHERE 
+GROUP BY 
+HAVING 
+ORDER BY 
+The HAVING clause must follow the GROUP BY clause in a query and must also precede the ORDER BY clause 
+if used. The following is the syntax of the SELECT statement, including the HAVING clause: 
+SELECT column1, column2 
+FROM table1, table2 
+WHERE [ conditions ] 
+GROUP BY column1, column2 
+HAVING [ conditions ] 
+ORDER BY column1, column2 
+Example: 
+Consider the CUSTOMERS table having the following records: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     | AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     |  1500.00 | 
+|  3 | kaushik  |  23 | Kota      |  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 |  
+|  6 | Komal    |  22 | MP        |  4500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+ 
+Following is the example, which would display record for which similar age count would be more than or equal to 2: 
+SQL > SELECT * 
+FROM CUSTOMERS 
+GROUP BY age 
+HAVING COUNT(age) >= 2; 
+This would produce the following result: 
++----+--------+-----+---------+---------+ 
+| ID | NAME   | AGE | ADDRESS | SALARY  | 
++----+--------+-----+---------+---------+ 
+|  2 | Khilan |  25 | Delhi   | 1500.00 | 
++----+--------+-----+---------+---------+ 

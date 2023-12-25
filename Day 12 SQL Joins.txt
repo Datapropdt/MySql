@@ -1,0 +1,721 @@
+JOINS:
+The SQL Joins clause is used to combine records from two or more tables in a database. A JOIN is a 
+means for combining fields from two tables by using values common to each. 
+Consider the following two tables, (a) CUSTOMERS table is as follows: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     | AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     |  1500.00 | 
+|  3 | kaushik  |  23 | Kota      |  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  6 | Komal    |  22 | MP        |  4500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+ 
+(b) Another table is ORDERS as follows: 
++-----+---------------------+-------------+--------+ 
+|OID  | DATE                | CUSTOMER_ID | AMOUNT | 
++-----+---------------------+-------------+--------+ 
+| 102 | 2009-10-08 00:00:00 |           3 |   3000 | 
+| 100 | 2009-10-08 00:00:00 |           3 |   1500 | 
+| 101 | 2009-11-20 00:00:00 |           2 |   1560 | 
+| 103 | 2008-05-20 00:00:00 |           4 |   2060 | 
++-----+---------------------+-------------+--------+ 
+Now, let us join these two tables in our SELECT statement as follows: 
+SQL> SELECT ID, NAME, AGE, AMOUNT 
+        FROM CUSTOMERS, ORDERS 
+        WHERE  CUSTOMERS.ID = ORDERS.CUSTOMER_ID; 
+This would produce the following result: 
++----+----------+-----+--------+ 
+| ID | NAME     | AGE | AMOUNT | 
++----+----------+-----+--------+ 
+|  3 | kaushik  |  23 |   3000 | 
+|  3 | kaushik  |  23 |   1500 | 
+|  2 | Khilan   |  25 |   1560 | 
+|  4 | Chaitali |  25 |   2060 | 
++----+----------+-----+--------+ 
+Here, it is noticeable that the join is performed in the WHERE clause. Several operators can be used to join tables, 
+such as =, <, >, <>, <=, >=, !=, BETWEEN, LIKE, and NOT; they can all be used to join tables. However, the most 
+common operator is the equal symbol. 
+SQL Join Types: 
+There are different types of joins available in SQL: 
+* 
+* 
+* 
+* 
+* 
+* 
+INNER JOIN: returns rows when there is a match in both tables. 
+LEFT JOIN: returns all rows from the left table, even if there are no matches in the right table. 
+RIGHT JOIN: returns all rows from the right table, even if there are no matches in the left table. 
+FULL JOIN: returns rows when there is a match in one of the tables. 
+SELF JOIN: is used to join a table to itself as if the table were two tables, temporarily renaming at least one 
+table in the SQL statement. 
+CARTESIAN JOIN: returns the Cartesian product of the sets of records from the two or more joined tables. 
+INNER JOIN 
+The most frequently used and important of the joins is the INNER JOIN. They are also referred to as an 
+EQUIJOIN. 
+The INNER JOIN creates a new result table by combining column values of two tables (table1 and table2) based 
+upon the join-predicate. The query compares each row of table1 with each row of table2 to find all pairs of rows 
+which satisfy the join-predicate. When the join-predicate is satisfied, column values for each matched pair of rows 
+of A and B are combined into a result row. 
+Syntax: 
+The basic syntax of INNER JOIN is as follows: 
+SELECT table1.column1, table2.column2... 
+FROM table1 
+INNER JOIN table2 
+ON table1.common_filed = table2.common_field; 
+Example: 
+Consider the following two tables, (a) CUSTOMERS table is as follows: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     | AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     |  1500.00 | 
+|  3 | kaushik  |  23 | Kota      |  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  6 | Komal    |  22 | MP        |  4500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+ 
+(b) Another table is ORDERS as follows: 
++-----+---------------------+-------------+--------+ 
+| OID | DATE                |          ID | AMOUNT | 
++-----+---------------------+-------------+--------+ 
+| 102 | 2009-10-08 00:00:00 |           3 |   3000 | 
+| 100 | 2009-10-08 00:00:00 |           3 |   1500 | 
+| 101 | 2009-11-20 00:00:00 |           2 |   1560 | 
+| 103 | 2008-05-20 00:00:00 |           4 |   2060 | 
++-----+---------------------+-------------+--------+ 
+Now, let us join these two tables using INNER JOIN as follows: 
+SQL> SELECT  ID, NAME, AMOUNT, DATE 
+     FROM CUSTOMERS 
+     INNER JOIN ORDERS 
+     ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID; 
+This would produce the following result: 
++----+----------+--------+---------------------+ 
+| ID | NAME     | AMOUNT | DATE                | 
++----+----------+--------+---------------------+ 
+|  3 | kaushik  |   3000 | 2009-10-08 00:00:00 | 
+|  3 | kaushik  |   1500 | 2009-10-08 00:00:00 | 
+|  2 | Khilan   |   1560 | 2009-11-20 00:00:00 | 
+|  4 | Chaitali |   2060 | 2008-05-20 00:00:00 | 
++----+----------+--------+---------------------+ 
+LEFT JOIN 
+The SQL LEFT JOIN returns all rows from the left table, even if there are no matches in the right table. This means 
+that if the ON clause matches 0 (zero) records in right table, the join will still return a row in the result, but with 
+NULL in each column from right table. 
+This means that a left join returns all the values from the left table, plus matched values from the right table or 
+NULL in case of no matching join predicate. 
+Syntax: 
+The basic syntax of LEFT JOIN is as follows: 
+SELECT table1.column1, table2.column2... 
+FROM table1 
+LEFT JOIN table2 
+ON table1.common_filed = table2.common_field; 
+Here given condition could be any given expression based on your requirement. 
+Example: 
+Consider the following two tables, (a) CUSTOMERS table is as follows: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     | AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     |  1500.00 | 
+|  3 | kaushik  |  23 | Kota      |  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  6 | Komal    |  22 | MP        |  4500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+ 
+(b) Another table is ORDERS as follows: 
++-----+---------------------+-------------+--------+ 
+| OID | DATE                | CUSTOMER_ID | AMOUNT | 
++-----+---------------------+-------------+--------+ 
+| 102 | 2009-10-08 00:00:00 |           3 |   3000 | 
+| 100 | 2009-10-08 00:00:00 |           3 |   1500 | 
+| 101 | 2009-11-20 00:00:00 |           2 |   1560 | 
+| 103 | 2008-05-20 00:00:00 |           4 |   2060 | 
++-----+---------------------+-------------+--------+ 
+Now, let us join these two tables using LEFT JOIN as follows: 
+SQL> SELECT  ID, NAME, AMOUNT, DATE 
+     FROM CUSTOMERS 
+     LEFT JOIN ORDERS 
+     ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID; 
+This would produce the following result: 
++----+----------+--------+---------------------+ 
+| ID | NAME     | AMOUNT | DATE                | 
++----+----------+--------+---------------------+ 
+|  1 | Ramesh   |   NULL | NULL                | 
+|  2 | Khilan   |   1560 | 2009-11-20 00:00:00 | 
+|  3 | kaushik  |   3000 | 2009-10-08 00:00:00 | 
+|  3 | kaushik  |   1500 | 2009-10-08 00:00:00 | 
+|  4 | Chaitali |   2060 | 2008-05-20 00:00:00 | 
+|  5 | Hardik   |   NULL | NULL                | 
+|  6 | Komal    |   NULL | NULL                | 
+|  7 | Muffy    |   NULL | NULL                | 
++----+----------+--------+---------------------+ 
+RIGHT JOIN 
+The SQL RIGHT JOIN returns all rows from the right table, even if there are no matches in the left table. This 
+means that if the ON clause matches 0 (zero) records in left table, the join will still return a row in the result, but 
+with NULL in each column from left table. 
+This means that a right join returns all the values from the right table, plus matched values from the left table or 
+NULL in case of no matching join predicate. 
+Syntax: 
+The basic syntax of RIGHT JOIN is as follows: 
+SELECT table1.column1, table2.column2... 
+FROM table1 
+RIGHT JOIN table2 
+ON table1.common_filed = table2.common_field; 
+Example: 
+Consider the following two tables, (a) CUSTOMERS table is as follows: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     | AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     |  1500.00 | 
+|  3 | kaushik  |  23 | Kota      |  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  6 | Komal    |  22 | MP        |  4500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+ 
+(b) Another table is ORDERS as follows: 
++-----+---------------------+-------------+--------+ 
+|OID  | DATE                | CUSTOMER_ID | AMOUNT | 
++-----+---------------------+-------------+--------+ 
+| 102 | 2009-10-08 00:00:00 |           3 |   3000 | 
+| 100 | 2009-10-08 00:00:00 |           3 |   1500 | 
+| 101 | 2009-11-20 00:00:00 |           2 |   1560 | 
+| 103 | 2008-05-20 00:00:00 |           4 |   2060 | 
++-----+---------------------+-------------+--------+ 
+Now, let us join these two tables using RIGHT JOIN as follows: 
+SQL> SELECT  ID, NAME, AMOUNT, DATE 
+     FROM CUSTOMERS 
+     RIGHT JOIN ORDERS 
+     ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID; 
+This would produce the following result: 
++------+----------+--------+---------------------+ 
+| ID   | NAME     | AMOUNT | DATE                | 
++------+----------+--------+---------------------+ 
+|    3 | kaushik  |   3000 | 2009-10-08 00:00:00 | 
+|    3 | kaushik  |   1500 | 2009-10-08 00:00:00 | 
+|    2 | Khilan   |   1560 | 2009-11-20 00:00:00 | 
+|    4 | Chaitali |   2060 | 2008-05-20 00:00:00 | 
++------+----------+--------+---------------------+ 
+FULL JOIN 
+The SQL FULL JOIN combines the results of both left and right outer joins. 
+The joined table will contain all records from both tables, and fill in NULLs for missing matches on either side. 
+Syntax: 
+The basic syntax of FULL JOIN is as follows: 
+SELECT table1.column1, table2.column2... 
+FROM table1 
+FULL JOIN table2 
+ON table1.common_filed = table2.common_field; 
+Here given condition could be any given expression based on your requirement. 
+
+Example: 
+Consider the following two tables, (a) CUSTOMERS table is as follows: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     | AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     |  1500.00 | 
+|  3 | kaushik  |  23 | Kota      |  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  6 | Komal    |  22 | MP        |  4500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+ 
+(b) Another table is ORDERS as follows: 
++-----+---------------------+-------------+--------+ 
+|OID  | DATE                | CUSTOMER_ID | AMOUNT | 
++-----+---------------------+-------------+--------+ 
+| 102 | 2009-10-08 00:00:00 |           3 |   3000 | 
+| 100 | 2009-10-08 00:00:00 |           3 |   1500 | 
+| 101 | 2009-11-20 00:00:00 |           2 |   1560 | 
+| 103 | 2008-05-20 00:00:00 |           4 |   2060 | 
++-----+---------------------+-------------+--------+ 
+Now, let us join these two tables using FULL JOIN as follows: 
+SQL> SELECT  ID, NAME, AMOUNT, DATE 
+     FROM CUSTOMERS 
+     FULL JOIN ORDERS 
+     ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID; 
+This would produce the following result: 
++------+----------+--------+---------------------+ 
+| ID   | NAME     | AMOUNT | DATE                | 
++------+----------+--------+---------------------+ 
+|    1 | Ramesh   |   NULL | NULL                | 
+|    2 | Khilan   |   1560 | 2009-11-20 00:00:00 | 
+|    3 | kaushik  |   3000 | 2009-10-08 00:00:00 | 
+|    3 | kaushik  |   1500 | 2009-10-08 00:00:00 | 
+|    4 | Chaitali |   2060 | 2008-05-20 00:00:00 | 
+|    5 | Hardik   |   NULL | NULL                | 
+|    6 | Komal    |   NULL | NULL                | 
+|    7 | Muffy    |   NULL | NULL                | 
+|    3 | kaushik  |   3000 | 2009-10-08 00:00:00 | 
+|    3 | kaushik  |   1500 | 2009-10-08 00:00:00 | 
+|    2 | Khilan   |   1560 | 2009-11-20 00:00:00 | 
+|    4 | Chaitali |   2060 | 2008-05-20 00:00:00 | 
++------+----------+--------+---------------------+ 
+If your Database does not support FULL JOIN like MySQL does not support FULL JOIN, then you can use UNION 
+ALL clause to combine two JOINS as follows: 
+SQL> SELECT  ID, NAME, AMOUNT, DATE 
+     FROM CUSTOMERS 
+     LEFT JOIN ORDERS  
+     ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID UNION ALL 
+     SELECT  ID, NAME, AMOUNT, DATE 
+     FROM CUSTOMERS 
+     RIGHT JOIN ORDERS 
+     ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID 
+SELF JOIN 
+The SQL SELF JOIN is used to join a table to itself as if the table were two tables, temporarily renaming at least 
+one table in the SQL statement. 
+Syntax: 
+The basic syntax of SELF JOIN is as follows: 
+SELECT a.column_name, b.column_name... 
+FROM table1 a, table1 b 
+WHERE a.common_filed = b.common_field; 
+Here, WHERE clause could be any given expression based on your requirement. 
+Example: 
+Consider the following two tables, (a) CUSTOMERS table is as follows: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     | AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     |  1500.00 | 
+|  3 | kaushik  |  23 | Kota      |  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  6 | Komal    |  22 | MP        |  4500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+ 
+Now, let us join this table using SELF JOIN as follows: 
+SQL> SELECT  a.ID, b.NAME, a.SALARY 
+     FROM CUSTOMERS a, CUSTOMERS b 
+     WHERE a.SALARY < b.SALARY; 
+This would produce the following result: 
++----+----------+---------+ 
+| ID | NAME     | SALARY  | 
++----+----------+---------+ 
+|  2 | Ramesh   | 1500.00 | 
+|  2 | kaushik  | 1500.00 | 
+|  1 | Chaitali | 2000.00 | 
+|  2 | Chaitali | 1500.00 | 
+|  3 | Chaitali | 2000.00 | 
+|  6 | Chaitali | 4500.00 | 
+|  1 | Hardik   | 2000.00 | 
+|  2 | Hardik   | 1500.00 | 
+|  3 | Hardik   | 2000.00 | 
+|  4 | Hardik   | 6500.00 | 
+|  6 | Hardik   | 4500.00 | 
+|  1 | Komal    | 2000.00 | 
+|  2 | Komal    | 1500.00 | 
+|  3 | Komal    | 2000.00 | 
+|  1 | Muffy    | 2000.00 | 
+|  2 | Muffy    | 1500.00 | 
+|  3 | Muffy    | 2000.00 | 
+|  4 | Muffy    | 6500.00 | 
+|  5 | Muffy    | 8500.00 | 
+|  6 | Muffy    | 4500.00 | 
++----+----------+---------+ 
+CARTESIAN JOIN 
+The CARTESIAN JOIN or CROSS JOIN returns the cartesian product of the sets of records from the two or more 
+joined tables. Thus, it equates to an inner join where the join-condition always evaluates to True or where the join
+condition is absent from the statement. 
+Syntax: 
+The basic syntax of INNER JOIN is as follows: 
+SELECT table1.column1, table2.column2... 
+FROM  table1, table2 [, table3 ] 
+Example: 
+Consider the following two tables, (a) CUSTOMERS table is as follows: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     | AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     |  1500.00 | 
+|  3 | kaushik  |  23 | Kota      |  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  6 | Komal    |  22 | MP        |  4500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+ 
+(b) Another table is ORDERS as follows: 
++-----+---------------------+-------------+--------+ 
+|OID  | DATE                | CUSTOMER_ID | AMOUNT | 
++-----+---------------------+-------------+--------+ 
+| 102 | 2009-10-08 00:00:00 |           3 |   3000 | 
+| 100 | 2009-10-08 00:00:00 |           3 |   1500 | 
+| 101 | 2009-11-20 00:00:00 |           2 |   1560 | 
+| 103 | 2008-05-20 00:00:00 |           4 |   2060 | 
++-----+---------------------+-------------+--------+ 
+Now, let us join these two tables using INNER JOIN as follows: 
+SQL> SELECT  ID, NAME, AMOUNT, DATE 
+     FROM CUSTOMERS, ORDERS; 
+ 
+This would produce the following result: 
++----+----------+--------+---------------------+ 
+| ID | NAME     | AMOUNT | DATE                | 
++----+----------+--------+---------------------+ 
+|  1 | Ramesh   |   3000 | 2009-10-08 00:00:00 | 
+|  1 | Ramesh   |   1500 | 2009-10-08 00:00:00 | 
+|  1 | Ramesh   |   1560 | 2009-11-20 00:00:00 | 
+|  1 | Ramesh   |   2060 | 2008-05-20 00:00:00 | 
+|  2 | Khilan   |   3000 | 2009-10-08 00:00:00 | 
+|  2 | Khilan   |   1500 | 2009-10-08 00:00:00 | 
+|  2 | Khilan   |   1560 | 2009-11-20 00:00:00 | 
+|  2 | Khilan   |   2060 | 2008-05-20 00:00:00 | 
+|  3 | kaushik  |   3000 | 2009-10-08 00:00:00 | 
+|  3 | kaushik  |   1500 | 2009-10-08 00:00:00 | 
+|  3 | kaushik  |   1560 | 2009-11-20 00:00:00 | 
+|  3 | kaushik  |   2060 | 2008-05-20 00:00:00 | 
+|  4 | Chaitali |   3000 | 2009-10-08 00:00:00 | 
+|  4 | Chaitali |   1500 | 2009-10-08 00:00:00 | 
+|  4 | Chaitali |   1560 | 2009-11-20 00:00:00 | 
+|  4 | Chaitali |   2060 | 2008-05-20 00:00:00 | 
+|  5 | Hardik   |   3000 | 2009-10-08 00:00:00 | 
+|  5 | Hardik   |   1500 | 2009-10-08 00:00:00 | 
+|  5 | Hardik   |   1560 | 2009-11-20 00:00:00 | 
+|  5 | Hardik   |   2060 | 2008-05-20 00:00:00 | 
+|  6 | Komal    |   3000 | 2009-10-08 00:00:00 | 
+|  6 | Komal    |   1500 | 2009-10-08 00:00:00 | 
+|  6 | Komal    |   1560 | 2009-11-20 00:00:00 | 
+|  6 | Komal    |   2060 | 2008-05-20 00:00:00 | 
+|  7 | Muffy    |   3000 | 2009-10-08 00:00:00 | 
+|  7 | Muffy    |   1500 | 2009-10-08 00:00:00 | 
+|  7 | Muffy    |   1560 | 2009-11-20 00:00:00 | 
+|  7 | Muffy    |   2060 | 2008-05-20 00:00:00 | 
++----+----------+--------+---------------------+ 
+  
+SQL Unions Clause 
+The SQL UNION clause/operator is used to combine the results of two or more SELECT statements 
+without returning any duplicate rows. 
+To use UNION, each SELECT must have the same number of columns selected, the same number of column 
+expressions, the same data type, and have them in the same order, but they do not have to be the same length. 
+Syntax: 
+The basic syntax of UNION is as follows: 
+SELECT column1 [, column2 ] 
+FROM table1 [, table2 ] 
+[WHERE condition] 
+UNION 
+SELECT column1 [, column2 ] 
+FROM table1 [, table2 ] 
+[WHERE condition] 
+Here given condition could be any given expression based on your requirement. 
+Example: 
+Consider the following two tables, (a) CUSTOMERS table is as follows: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     
+| AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     
+|  1500.00 | 
+|  3 | kaushik  |  23 | Kota      
+|  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  6 | Komal    |  22 | MP        
+|  4500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+ 
+(b) Another table is ORDERS as follows:  
+ 
++-----+---------------------+-------------+--------+ 
+|OID  | DATE                | CUSTOMER_ID | AMOUNT | 
++-----+---------------------+-------------+--------+ 
+| 102 | 2009-10-08 00:00:00 |           3 |   3000 | 
+| 100 | 2009-10-08 00:00:00 |           3 |   1500 | 
+| 101 | 2009-11-20 00:00:00 |           2 |   1560 | 
+| 103 | 2008-05-20 00:00:00 |           4 |   2060 | 
++-----+---------------------+-------------+--------+ 
+Now, let us join these two tables in our SELECT statement as follows: 
+SQL> SELECT  ID, NAME, AMOUNT, DATE 
+     FROM CUSTOMERS 
+     LEFT JOIN ORDERS 
+     ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID 
+UNION 
+     SELECT  ID, NAME, AMOUNT, DATE 
+     FROM CUSTOMERS 
+     RIGHT JOIN ORDERS 
+     ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID; 
+This would produce the following result: 
++------+----------+--------+---------------------+ 
+| ID   | NAME     | AMOUNT | DATE                | 
++------+----------+--------+---------------------+ 
+|    1 | Ramesh   |   NULL | NULL                | 
+|    2 | Khilan   |   1560 | 2009-11-20 00:00:00 | 
+|    3 | kaushik  |   3000 | 2009-10-08 00:00:00 | 
+|    3 | kaushik  |   1500 | 2009-10-08 00:00:00 | 
+|    4 | Chaitali |   2060 | 2008-05-20 00:00:00 | 
+|    5 | Hardik   |   NULL | NULL                | 
+|    6 | Komal    |   NULL | NULL                | 
+|    7 | Muffy    |   NULL | NULL                | 
++------+----------+--------+---------------------+ 
+The UNION ALL Clause: 
+The UNION ALL operator is used to combine the results of two SELECT statements including duplicate rows. 
+The same rules that apply to UNION apply to the UNION ALL operator. 
+Syntax: 
+The basic syntax of UNION ALL is as follows: 
+SELECT column1 [, column2 ] 
+FROM table1 [, table2 ] 
+[WHERE condition] 
+ 
+UNION ALL 
+ 
+SELECT column1 [, column2 ] 
+FROM table1 [, table2 ] 
+[WHERE condition] 
+Here given condition could be any given expression based on your requirement. 
+ 
+   
+ 
+ 
+Example: 
+Consider the following two tables, (a) CUSTOMERS table is as follows: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     | AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     |  1500.00 | 
+|  3 | kaushik  |  23 | Kota      |  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  6 | Komal    |  22 | MP        |  4500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+ 
+(b) Another table is ORDERS as follows: 
++-----+---------------------+-------------+--------+ 
+|OID  | DATE                | CUSTOMER_ID | AMOUNT | 
++-----+---------------------+-------------+--------+ 
+| 102 | 2009-10-08 00:00:00 |           3 |   3000 | 
+| 100 | 2009-10-08 00:00:00 |           3 |   1500 | 
+| 101 | 2009-11-20 00:00:00 |           2 |   1560 | 
+| 103 | 2008-05-20 00:00:00 |           4 |   2060 | 
++-----+---------------------+-------------+--------+ 
+Now, let us join these two tables in our SELECT statement as follows: 
+SQL> SELECT  ID, NAME, AMOUNT, DATE 
+     FROM CUSTOMERS 
+     LEFT JOIN ORDERS 
+     ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID 
+UNION ALL 
+     SELECT  ID, NAME, AMOUNT, DATE 
+     FROM CUSTOMERS 
+     RIGHT JOIN ORDERS 
+     ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID; 
+This would produce the following result: 
++------+----------+--------+---------------------+ 
+| ID   | NAME     | AMOUNT | DATE                | 
++------+----------+--------+---------------------+ 
+|    1 | Ramesh   |   NULL | NULL                | 
+|    2 | Khilan   |   1560 | 2009-11-20 00:00:00 | 
+|    3 | kaushik  |   3000 | 2009-10-08 00:00:00 | 
+|    3 | kaushik  |   1500 | 2009-10-08 00:00:00 | 
+|    4 | Chaitali |   2060 | 2008-05-20 00:00:00 | 
+|    5 | Hardik   |   NULL | NULL                | 
+|    6 | Komal    |   NULL | NULL                | 
+|    7 | Muffy    |   NULL | NULL                | 
+|    3 | kaushik  |   3000 | 2009-10-08 00:00:00 | 
+|    3 | kaushik  |   1500 | 2009-10-08 00:00:00 | 
+|    2 | Khilan   |   1560 | 2009-11-20 00:00:00 | 
+|    4 | Chaitali |   2060 | 2008-05-20 00:00:00 | 
++------+----------+--------+---------------------+ 
+There are two other clauses (i.e., operators), which are very similar to UNION clause: 
+ 
+   
+ 
+ 
+* SQL INTERSECT Clause: is used to combine two SELECT statements, but returns rows only from the first 
+SELECT statement that are identical to a row in the second SELECT statement. 
+* SQL EXCEPT Clause : combines two SELECT statements and returns rows from the first SELECT statement 
+that are not returned by the second SELECT statement. 
+ 
+INTERSECT Clause 
+The SQL INTERSECT clause/operator is used to combine two SELECT statements, but returns rows only from the 
+first SELECT statement that are identical to a row in the second SELECT statement. This means INTERSECT 
+returns only common rows returned by the two SELECT statements. 
+Just as with the UNION operator, the same rules apply when using the INTERSECT operator. MySQL does not 
+support INTERSECT operator 
+Syntax: 
+The basic syntax of INTERSECT is as follows: 
+SELECT column1 [, column2 ] 
+FROM table1 [, table2 ] 
+[WHERE condition] 
+ 
+INTERSECT 
+ 
+SELECT column1 [, column2 ] 
+FROM table1 [, table2 ] 
+[WHERE condition] 
+Here given condition could be any given expression based on your requirement. 
+Example: 
+Consider the following two tables, (a) CUSTOMERS table is as follows: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     | AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     |  1500.00 | 
+|  3 | kaushik  |  23 | Kota      |  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  6 | Komal    |  22 | MP        |  4500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+ 
+(b) Another table is ORDERS as follows: 
++-----+---------------------+-------------+--------+ 
+|OID  | DATE                | CUSTOMER_ID | AMOUNT | 
++-----+---------------------+-------------+--------+ 
+| 102 | 2009-10-08 00:00:00 |           3 |   3000 | 
+| 100 | 2009-10-08 00:00:00 |           3 |   1500 | 
+| 101 | 2009-11-20 00:00:00 |           2 |   1560 | 
+| 103 | 2008-05-20 00:00:00 |           4 |   2060 | 
++-----+---------------------+-------------+--------+ 
+Now, let us join these two tables in our SELECT statement as follows: 
+ 
+   
+ 
+ 
+SQL> SELECT  ID, NAME, AMOUNT, DATE 
+     FROM CUSTOMERS 
+     LEFT JOIN ORDERS 
+     ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID 
+INTERSECT 
+     SELECT  ID, NAME, AMOUNT, DATE 
+     FROM CUSTOMERS 
+     RIGHT JOIN ORDERS 
+     ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID; 
+This would produce the following result: 
++------+---------+--------+---------------------+ 
+| ID   | NAME    | AMOUNT | DATE                | 
++------+---------+--------+---------------------+ 
+|    3 | kaushik |   3000 | 2009-10-08 00:00:00 | 
+|    3 | kaushik |   1500 | 2009-10-08 00:00:00 | 
+|    2 | Ramesh  |   1560 | 2009-11-20 00:00:00 | 
+|    4 | kaushik |   2060 | 2008-05-20 00:00:00 | 
++------+---------+--------+---------------------+ 
+EXCEPT Clause 
+The SQL EXCEPT clause/operator is used to combine two SELECT statements and returns rows from the first 
+SELECT statement that are not returned by the second SELECT statement. This means EXCEPT returns only 
+rows, which are not available in second SELECT statement. 
+Just as with the UNION operator, the same rules apply when using the EXCEPT operator. MySQL does not 
+support EXCEPT operator. 
+Syntax:  
+The basic syntax of EXCEPT is as follows: 
+SELECT column1 [, column2 ] 
+FROM table1 [, table2 ] 
+[WHERE condition] 
+ 
+EXCEPT 
+ 
+SELECT column1 [, column2 ] 
+FROM table1 [, table2 ] 
+[WHERE condition] 
+Here given condition could be any given expression based on your requirement. 
+Example: 
+Consider the following two tables, (a) CUSTOMERS table is as follows: 
+ 
+   
+ 
+ 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     | AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     |  1500.00 | 
+|  3 | kaushik  |  23 | Kota      |  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  6 | Komal    |  22 | MP        |  4500.00 | 
+|  7 | Muffy    |  24 | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+ 
+(b) Another table is ORDERS as follows: 
++-----+---------------------+-------------+--------+ 
+|OID  | DATE                | CUSTOMER_ID | AMOUNT | 
++-----+---------------------+-------------+--------+ 
+| 102 | 2009-10-08 00:00:00 |           3 |   3000 | 
+| 100 | 2009-10-08 00:00:00 |           3 |   1500 | 
+| 101 | 2009-11-20 00:00:00 |           2 |   1560 | 
+| 103 | 2008-05-20 00:00:00 |           4 |   2060 | 
++-----+---------------------+-------------+--------+ 
+Now, let us join these two tables in our SELECT statement as follows: 
+SQL> SELECT  ID, NAME, AMOUNT, DATE 
+     FROM CUSTOMERS 
+     LEFT JOIN ORDERS 
+     ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID 
+EXCEPT 
+     SELECT  ID, NAME, AMOUNT, DATE 
+     FROM CUSTOMERS 
+     RIGHT JOIN ORDERS 
+     ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID; 
+This would produce the following result: 
++----+---------+--------+---------------------+ 
+| ID | NAME    | AMOUNT | DATE                | 
++----+---------+--------+---------------------+ 
+|  1 | Ramesh  |   NULL | NULL                | 
+|  5 | Hardik  |   NULL | NULL                | 
+|  6 | Komal   |   NULL | NULL                | 
+|  7 | Muffy   |   NULL | NULL                | 
++----+---------+--------+---------------------+ 
+ 
+   
+SQL NULL Values 
+The SQL NULL is the term used to represent a missing value. A NULL value in a table is a value in a field 
+that appears to be blank. 
+A field with a NULL value is a field with no value. It is very important to understand that a NULL value is different 
+than a zero value or a field that contains spaces. 
+Syntax: 
+The basic syntax of NULL while creating a table: 
+SQL> CREATE TABLE CUSTOMERS( 
+ID   INT              NOT NULL, 
+NAME VARCHAR (20)     
+NOT NULL, 
+AGE  INT              NOT NULL, 
+ADDRESS  CHAR (25) , 
+SALARY   DECIMAL (18, 2),        
+PRIMARY KEY (ID) 
+); 
+Here, NOT NULL signifies that column should always accept an explicit value of the given data type. There are 
+two columns where we did not use NOT NULL, which means these columns could be NULL. 
+A field with a NULL value is one that has been left blank during record creation. 
+
+Example: 
+The NULL value can cause problems when selecting data, however, because when comparing an unknown value 
+to any other value, the result is always unknown and not included in the final results. 
+You must use the IS NULL or IS NOT NULL operators in order to check for a NULL value. 
+Consider the following table, CUSTOMERS having the following records: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     | AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     |  1500.00 | 
+|  3 | kaushik  |  23 | Kota      |  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
+|  6 | Komal    |  22 | MP        |          | 
+|  7 | Muffy    |  24 | Indore    |          | 
++----+----------+-----+-----------+----------+ 
+Now, following is the usage of IS NOT NULL operator: 
+SQL> SELECT  ID, NAME, AGE, ADDRESS, SALARY 
+     FROM CUSTOMERS 
+     WHERE SALARY IS NOT NULL; 
+This would produce the following result: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     | AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 | 
+|  2 | Khilan   |  25 | Delhi     |  1500.00 | 
+|  3 | kaushik  |  23 | Kota      |  2000.00 | 
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 | 
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 | 
++----+----------+-----+-----------+----------+ 
+Now, following is the usage of IS NULL operator: 
+SQL> SELECT  ID, NAME, AGE, ADDRESS, SALARY 
+     FROM CUSTOMERS 
+     WHERE SALARY IS NULL; 
+This would produce the following result: 
++----+----------+-----+-----------+----------+ 
+| ID | NAME     | AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+|  6 | Komal    |  22 | MP        |          | 
+|  7 | Muffy    |  24 | Indore    |          | 
++----+----------+-----+-----------+----------+ 

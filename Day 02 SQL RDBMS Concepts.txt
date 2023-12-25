@@ -1,0 +1,314 @@
+2. SQL RDBMS Concepts:
+
+RDBMS stands for Relational Database Management System. RDBMS is the basis for SQL and for all modern database systems like MS SQL Server, IBM DB2, Oracle, MySQL, and Microsoft Access.
+
+What is table?
+The data0 in RDBMS is stored in database objects called tables.
+The table is a collection of related data entries and it consists of columns and rows.
+
+
++----+----------+-----+-----------+----------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+-----------+----------+
+| 1 | Ramesh | 32 | Ahmedabad | 2000.00 |
+| 2 | Khilan | 25 | Delhi | 1500.00 |
+| 3 | kaushik | 23 | Kota | 2000.00 |
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
+| 6 | Komal | 22 | MP | 4500.00 |
+| 7 | Muffy | 24 | Indore | 10000.00 |
++----+----------+-----+-----------+----------+
+
+--------------------------------------------------------------------------------
+What is field?
+Every table is broken up into smaller entities called fields. The fields in the CUSTOMERS table consist of ID, 
+NAME, AGE, ADDRESS and SALARY
+
+--------------------------------------------------------------------------------
+
+
+What is record or row?
+A record, also called a row of data, is each individual entry that exists in a table.
+
++----+----------+-----+-----------+----------+
+| 1 | Ramesh | 32 | Ahmedabad | 2000.00 |
++----+----------+-----+-----------+----------+
+
+What is column?
+A column is a vertical entity in a table that contains all information associated with a specific field in a table.
+
++-----------+
+| ADDRESS |
++-----------+
+| Ahmedabad |
+| Delhi |
+| Kota |
+| Mumbai |
+| Bhopal |
+| MP |
+| Indore |
++----+------+
+
+What is NULL value?
+A NULL value in a table is a value in a field that appears to be blank, which means a field with a NULL value is a 
+field with no value.
+It is very important to understand that a NULL value is different than a zero value or a field that contains spaces. A 
+field with a NULL value is one that has been left blank during record creation.
+
+--------------------------------------------------------------------------------
+SQL Constraints:
+Constraints are the rules enforced on data columns on table. These are used to limit the type of data that can go 
+into a table. This ensures the accuracy and reliability of the data in the database.
+Constraints could be column level or table level. Column level constraints are applied only to one column, whereas 
+table level constraints are applied to the whole table.
+Following are commonly used constraints available in SQL:
+* NOT NULL Constraint: Ensures that a column cannot have NULL value.
+* DEFAULT Constraint: Provides a default value for a column when none is specified.
+* UNIQUE Constraint: Ensures that all values in a column are different.
+* PRIMARY Key: Uniquely identified each rows/records in a database table.
+* FOREIGN Key: Uniquely identified a rows/records in any another database table.
+* CHECK Constraint: The CHECK constraint ensures that all values in a column satisfy certain conditions.
+* INDEX: Use to create and retrieve data from the database very quickly
+
+-------------------------------------------------------------------------------
+
+
+NOT NULL Constraint: 
+By default, a column can hold NULL values. If you do not want a column to have a NULL value, then you need to define such constraint on this column specifying that NULL is now not allowed for that column.
+
+Example:
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2), 
+ PRIMARY KEY (ID)
+);
+
+-------------------------------------------------------------------------------
+DEFAULT Constraint: 
+The DEFAULT constraint provides a default value to a column when the INSERT INTO statement does not provide 
+a specific value.
+
+SALARY 
+column is set to 5000.00 by default, so in case INSERT INTO statement does not provide a value for this column.
+then by default this column would be set to 5000.00.
+
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2) DEFAULT 5000.00, 
+ PRIMARY KEY (ID)
+);
+
+If CUSTOMERS table has already been created, then to add a DFAULT constraint to SALARY column, you would 
+write a statement:
+
+ALTER TABLE CUSTOMERS
+ MODIFY SALARY DECIMAL (18, 2) DEFAULT 5000.00;
+
+
+Drop Default Constraint:
+To drop a DEFAULT constraint:
+
+ALTER TABLE CUSTOMERS
+ ALTER COLUMN SALARY DROP DEFAULT;
+-------------------------------------------------------------------------------
+
+UNIQUE Constraint: 
+The UNIQUE Constraint prevents two records from having identical values in a particular column. In the 
+CUSTOMERS table, for example, you might want to prevent two or more people from having identical age.
+
+
+Example:
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL UNIQUE,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2), 
+ PRIMARY KEY (ID)
+);
+
+
+If CUSTOMERS table has already been created, then to add a UNIQUE constraint to AGE column.
+
+ALTER TABLE CUSTOMERS
+ MODIFY AGE INT NOT NULL UNIQUE;
+
+You can also use following syntax, which supports naming the constraint in multiple columns as well:
+
+ALTER TABLE CUSTOMERS
+ ADD CONSTRAINT myUniqueConstraint UNIQUE(AGE, SALARY);
+
+
+-------------------------------------------------------------------------------
+
+PRIMARY Key: 
+A primary key is a field in a table which uniquely identifies each row/record in a database table. Primary keys must 
+contain unique values. A primary key column cannot have NULL values.
+
+A table can have only one primary key, which may consist of single or multiple fields. When multiple fields are used 
+as a primary key, they are called a composite key.
+
+If a table has a primary key defined on any field(s), then you can not have two records having the same value of 
+that field(s).
+
+Note: You would use these concepts while creating database tables.
+
+Create Primary Key:
+Here is the syntax to define ID attribute as a primary key in a CUSTOMERS table:
+
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2), 
+ PRIMARY KEY (ID)
+);
+
+*To create a PRIMARY KEY constraint on the "ID" column when CUSTOMERS table already exists:
+
+ALTER TABLE CUSTOMER ADD PRIMARY KEY (ID);
+
+NOTE: If you use the ALTER TABLE statement to add a primary key, the primary key column(s) must already have 
+been declared to not contain NULL values.
+
+*Defining a PRIMARY KEY constraint on multiple columns:
+
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2), 
+ PRIMARY KEY (ID, NAME)
+);
+
+To create a PRIMARY KEY constraint on the "ID" and "NAMES" columns when CUSTOMERS table already exists.
+
+ALTER TABLE CUSTOMERS 
+ ADD CONSTRAINT PK_CUSTID PRIMARY KEY (ID, NAME);
+
+Delete Primary Key:
+ALTER TABLE CUSTOMERS DROP PRIMARY KEY ;
+
+-------------------------------------------------------------------------------
+FOREIGN Key:
+A foreign key is a key used to link two tables together. This is sometimes called a referencing key.
+Foreign Key is a column or a combination of columns whose values match a Primary Key in a different table.
+
+*The relationship between 2 tables matches the Primary Key in one of the tables with a Foreign Key in the 
+second table.
+
+*If a table has a primary key defined on any field(s), then you can not have two records having the same value of 
+that field(s).
+
+Example:
+
+CUSTOMERS table:
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2), 
+ PRIMARY KEY (ID)
+);
+
+ORDERS table:
+CREATE TABLE ORDERS (
+ ID INT NOT NULL,
+ DATE DATETIME, 
+ CUSTOMER_ID INT references CUSTOMERS(ID),
+ AMOUNT double,
+ PRIMARY KEY (ID)
+);
+
+If ORDERS table has already been created, and the foreign key has not yet been set, use the syntax for specifying 
+a foreign key by altering a table.
+
+ALTER TABLE ORDERS 
+ ADD FOREIGN KEY (Customer_ID) REFERENCES CUSTOMERS (ID);
+
+
+DROP a FOREIGN KEY Constraint:
+
+ALTER TABLE ORDERS
+ DROP FOREIGN KEY;
+
+-------------------------------------------------------------------------------
+CHECK Constraint: 
+The CHECK Constraint enables a condition to check the value being entered into a record. If the condition 
+evaluates to false, the record violates the constraint and isn’t entered into the table.
+
+Example:
+
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL CHECK (AGE >= 18),
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2), 
+ PRIMARY KEY (ID)
+);
+
+*If CUSTOMERS table has already been created, then to add a CHECK constraint to AGE column, you would write 
+a statement similar:
+
+ ALTER TABLE CUSTOMERS
+ MODIFY AGE INT NOT NULL CHECK (AGE >= 18 );
+
+*You can also use following syntax, which supports naming the constraint in multiple columns as well:
+
+ALTER TABLE CUSTOMERS
+ ADD CONSTRAINT myCheckConstraint CHECK(AGE >= 18);
+
+DROP a CHECK Constraint:
+
+*To drop a CHECK constraint, use the following SQL. This syntax does not work with MySQL:
+
+ALTER TABLE CUSTOMERS
+ DROP CONSTRAINT myCheckConstraint;
+
+-------------------------------------------------------------------------------
+INDEX: 
+
+The INDEX is used to create and retrieve data from the database very quickly. Index can be created by using 
+single or group of columns in a table. When index is created, it is assigned a ROWID for each row before it sorts
+out the data.
+Proper indexes are good for performance in large databases, but you need to be careful while creating index. 
+Selection of fields depends on what you are using in your SQL queries.
+
+Example:
+
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2), 
+ PRIMARY KEY (ID)
+);
+
+*Now, you can create index on single or multiple columns using the following syntax:
+
+CREATE INDEX index_name
+ ON table_name ( column1, column2.....);
+
+*To create an INDEX on AGE column, to optimize the search on customers for a particular age, following is the SQL 
+syntax:
+
+CREATE INDEX idx_age
+ ON CUSTOMERS ( AGE );
+
+
+DROP an INDEX Constraint:
+
+ALTER TABLE CUSTOMERS
+ DROP INDEX idx_age;
+-------------------------------------------------------------------------------

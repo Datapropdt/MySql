@@ -1,0 +1,223 @@
+SQL Constraints
+Constraints are the rules enforced on data columns on table. These are used to limit the type of data that can go into a table. This ensures the accuracy and reliability of the data in the database.
+
+Contraints could be column level or table level. Column level constraints are applied only to one column where as table level constraints are applied to the whole table.
+Following are commonly used constraints available in SQL. These constraints have already been discussed in SQL - RDBMS Concepts chapter but its worth to revise them at this point.
+
+Following are commonly used constraints available in SQL:
+* NOT NULL Constraint: Ensures that a column cannot have NULL value.
+* DEFAULT Constraint: Provides a default value for a column when none is specified.
+* UNIQUE Constraint: Ensures that all values in a column are different.
+* PRIMARY Key: Uniquely identified each rows/records in a database table.
+* FOREIGN Key: Uniquely identified a row/record in any other database table.
+* CHECK Constraint: The CHECK constraint ensures that all values in a column satisfy certain conditions.
+* INDEX: Use to create and retrieve data from the database very quickly.
+NOT NULL Constraint: 
+By default, a column can hold NULL values. If you do not want a column to have a NULL value, then you need to 
+define such constraint on this column specifying that NULL is now not allowed for that column.
+A NULL is not the same as no data, rather, it represents unknown data.
+Example:
+
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL,
+ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2), 
+ PRIMARY KEY (ID)
+);
+
+
+>>ALTER TABLE CUSTOMERS MODIFY SALARY DECIMAL (18, 2) NOT NULL;
+
+
+DEFAULT Constraint:
+
+The DEFAULT constraint provides a default value to a column when the INSERT INTO statement does not provide 
+a specific value.
+
+
+Example:
+CREATE TABLE CUSTOMERS(
+ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2) DEFAULT 5000.00, 
+ PRIMARY KEY (ID)
+);
+
+ALTER TABLE CUSTOMERS
+ MODIFY SALARY DECIMAL (18, 2) DEFAULT 5000.00;
+
+Drop Default Constraint:
+ALTER TABLE CUSTOMERS ALTER COLUMN SALARY DROP DEFAULT;
+
+
+UNIQUE Constraint: 
+
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL UNIQUE,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2), 
+ PRIMARY KEY (ID)
+);
+
+ALTER TABLE CUSTOMERS MODIFY AGE INT NOT NULL UNIQUE;
+
+ALTER TABLE CUSTOMERS  ADD CONSTRAINT myUniqueConstraint UNIQUE(AGE, SALARY);
+
+
+
+----------------------------------------------------------------------------------
+DROP a UNIQUE Constraint:
+
+ALTER TABLE CUSTOMERS  DROP CONSTRAINT myUniqueConstraint;
+
+ALTER TABLE CUSTOMERS DROP INDEX myUniqueConstraint;
+
+
+----------------------------------------------------------------------------------
+
+
+PRIMARY Key: 
+A primary key is a field in a table which uniquely identifies each row/record in a database table. Primary keys must contain unique values. A primary key column cannot have NULL values.
+A table can have only one primary key, which may consist of single or multiple fields. When multiple fields are used as a primary key, they are called a composite key.
+If a table has a primary key defined on any field(s), then you can not have two records having the same value of that field(s).
+Note: You would use these concepts while creating database tables.
+
+Create Primary Key:
+
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2), 
+ PRIMARY KEY (ID)
+);
+
+SQL syntax:
+ALTER TABLE CUSTOMER ADD PRIMARY KEY (ID);
+
+NOTE: If you use the ALTER TABLE statement to add a primary key, the primary key column(s) must already have been declared to not contain NULL values (when the table was first created).
+
+SQL syntax:
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2), 
+ PRIMARY KEY (ID, NAME)
+);
+
+To create a PRIMARY KEY constraint on the "ID" and "NAMES" columns when CUSTOMERS table already exists, use the following SQL syntax:
+
+ALTER TABLE CUSTOMERS 
+ ADD CONSTRAINT PK_CUSTID PRIMARY KEY (ID, NAME);
+Delete Primary Key:
+
+Syntax:
+ALTER TABLE CUSTOMERS DROP PRIMARY KEY ;
+
+----------------------------------------------------------------------------------
+
+FOREIGN Key:
+A foreign key is a key used to link two tables together. This is sometimes called a referencing key.
+Primary key field from one table and insert it into the other table where it becomes a foreign key i.e., Foreign Key is a column or a combination of columns, whose values match a Primary Key in a different table.
+The relationship between 2 tables matches the Primary Key in one of the tables with a Foreign Key in the second table.
+If a table has a primary key defined on any field(s), then you can not have two records having the same value of that field(s).
+
+Example:
+
+CUSTOMERS table:
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2), 
+ PRIMARY KEY (ID)
+);
+
+ORDERS table:
+CREATE TABLE ORDERS (
+ ID INT NOT NULL,
+ DATE DATETIME, 
+ CUSTOMER_ID INT references CUSTOMERS(ID),
+ AMOUNT double,
+ PRIMARY KEY (ID)
+);
+
+ALTER TABLE ORDERS 
+ADD FOREIGN KEY (Customer_ID) REFERENCES CUSTOMERS (ID);
+DROP a FOREIGN KEY Constraint:
+
+SQL:
+ALTER TABLE ORDERS
+ DROP FOREIGN KEY;
+
+----------------------------------------------------------------------------------
+
+CHECK Constraint: 
+
+Example:
+
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL CHECK (AGE >= 18),
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2), 
+ PRIMARY KEY (ID)
+);
+
+>>> ALTER TABLE CUSTOMERS MODIFY AGE INT NOT NULL CHECK (AGE >= 18 );
+
+>>> ALTER TABLE CUSTOMERS ADD CONSTRAINT myCheckConstraint CHECK(AGE >= 18);
+
+
+DROP a CHECK Constraint:
+ALTER TABLE CUSTOMERS
+ DROP CONSTRAINT myCheckConstraint;
+
+INDEX: 
+The INDEX is used to create and retrieve data from the database very quickly. Index can be created by using 
+single or group of columns in a table. When index is created, it is assigned a ROWID for each row before it sorts
+out the data.
+Proper indexes are good for performance in large databases, but you need to be careful while creating index. 
+Selection of fields depends on what you are using in your SQL queries.
+Example:
+For example, the following SQL creates a new table called CUSTOMERS and adds five columns:
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2), 
+ PRIMARY KEY (ID)
+);
+Now, you can create index on single or multiple columns using the followwng syntax:
+CREATE INDEX index_name
+ ON table_name ( column1, column2.....);
+To create an INDEX on AGE column, to optimize the search on customers for a particular age, following is the SQL 
+syntax:
+CREATE INDEX idx_age
+ ON CUSTOMERS ( AGE );
+
+DROP an INDEX Constraint:
+ALTER TABLE CUSTOMERS  DROP INDEX idx_age;
+
+Dropping Constraints:
+
+ALTER TABLE EMPLOYEES DROP CONSTRAINT EMPLOYEES_PK;
+
+ALTER TABLE EMPLOYEES DROP PRIMARY KEY;
+
+Integrity Constraints:
+Integrity constraints are used to ensure accuracy and consistency of data in a relational database. Data integrity is handled in a relational database through the concept of referential integrity.
+
+-----------------------------------------------------------------------------------------------------------------------------

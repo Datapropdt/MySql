@@ -1,0 +1,247 @@
+SQL Temporary Tables
+There are RDBMS, which support temporary tables. Temporary Tables are a great feature that lets you 
+store and process intermediate results by using the same selection, update, and join capabilities that you can use 
+with typical SQL Server tables.
+The temporary tables could be very useful in some cases to keep temporary data. The most important thing that 
+should be known for temporary tables is that they will be deleted when the current client session terminates.
+Temporary tables are available in MySQL version 3.23 onwards. If you use an older version of MySQL than 3.23,
+you can't use temporary tables, but you can use heap tables.
+As stated earlier, temporary tables will only last as long as the session is alive. If you run the code in a PHP script, 
+the temporary table will be destroyed automatically when the script finishes executing. If you are connected to the 
+MySQL database server through the MySQL client program, then the temporary table will exist until you close the 
+client or manually destroy the table.
+Example:
+Here is an example showing you usage of temporary table:
+mysql> CREATE TEMPORARY TABLE SALESSUMMARY (
+ -> product_name VARCHAR(50) NOT NULL
+ -> , total_sales DECIMAL(12,2) NOT NULL DEFAULT 0.00
+ -> , avg_unit_price DECIMAL(7,2) NOT NULL DEFAULT 0.00
+ -> , total_units_sold INT UNSIGNED NOT NULL DEFAULT 0
+);
+Query OK, 0 rows affected (0.00 sec)
+mysql> INSERT INTO SALESSUMMARY
+ -> (product_name, total_sales, avg_unit_price, total_units_sold)
+ -> VALUES
+ -> ('cucumber', 100.25, 90, 2);
+mysql> SELECT * FROM SALESSUMMARY;
++--------------+-------------+----------------+------------------+
+| product_name | total_sales | avg_unit_price | total_units_sold |
++--------------+-------------+----------------+------------------+
+| cucumber | 100.25 | 90.00 | 2 |
++--------------+-------------+----------------+------------------+
+1 row in set (0.00 sec)
+ 
+ 
+When you issue a SHOW TABLES command, then your temporary table would not be listed out in the list. Now if 
+you will log out of the MySQL session and then you will issue a SELECT command, then you will find no data 
+available in the database. Even your temporary table would also not exist.
+Dropping Temporary Tables:
+By default, all the temporary tables are deleted by MySQL when your database connection gets terminated. Still 
+you want to delete them in between, then you do so by issuing DROP TABLE command.
+Following is the example on dropping a temproary table.
+mysql> CREATE TEMPORARY TABLE SALESSUMMARY (
+ -> product_name VARCHAR(50) NOT NULL
+ -> , total_sales DECIMAL(12,2) NOT NULL DEFAULT 0.00
+ -> , avg_unit_price DECIMAL(7,2) NOT NULL DEFAULT 0.00
+ -> , total_units_sold INT UNSIGNED NOT NULL DEFAULT 0
+);
+Query OK, 0 rows affected (0.00 sec)
+mysql> INSERT INTO SALESSUMMARY
+ -> (product_name, total_sales, avg_unit_price, total_units_sold)
+ -> VALUES
+ -> ('cucumber', 100.25, 90, 2);
+mysql> SELECT * FROM SALESSUMMARY;
++--------------+-------------+----------------+------------------+
+| product_name | total_sales | avg_unit_price | total_units_sold |
++--------------+-------------+----------------+------------------+
+| cucumber | 100.25 | 90.00 | 2 |
++--------------+-------------+----------------+------------------+
+1 row in set (0.00 sec)
+mysql> DROP TABLE SALESSUMMARY;
+mysql> SELECT * FROM SALESSUMMARY;
+ERROR 1146: Table 'TUTORIALS.SALESSUMMARY' doesn't exist
+ 
+ 
+SQL Clone Tables
+There may be a situation when you need an exact copy of a table and CREATE TABLE ... SELECT... 
+doesn't suit your purposes because the copy must include the same indexes, default values, and so forth.
+If you are using MySQL RDBMS, you can handle this situation by the following steps:
+ Use SHOW CREATE TABLE command to get a CREATE TABLE statement that specifies the source table's 
+structure, indexes and all.
+ Modify the statement to change the table name to that of the clone table and execute the statement. This way 
+you will have exact clone table.
+ Optionally, if you need the table contents copied as well, issue an INSERT INTO ... SELECT statement, too.
+Example:
+Try out the following example to create a clone table for TUTORIALS_TBL, whose structure is as follows:
+Step 1:
+Get complete structure about table.
+SQL> SHOW CREATE TABLE TUTORIALS_TBL \G;
+*************************** 1. row ***************************
+ Table: TUTORIALS_TBL
+Create Table: CREATE TABLE `TUTORIALS_TBL` (
+ `tutorial_id` int(11) NOT NULL auto_increment,
+ `tutorial_title` varchar(100) NOT NULL default '',
+ `tutorial_author` varchar(40) NOT NULL default '',
+ `submission_date` date default NULL,
+ PRIMARY KEY (`tutorial_id`),
+ UNIQUE KEY `AUTHOR_INDEX` (`tutorial_author`)
+) TYPE=MyISAM
+1 row in set (0.00 sec)
+Step 2:
+Rename this table and create another table.
+ 
+ 
+SQL> CREATE TABLE `CLONE_TBL` (
+ -> `tutorial_id` int(11) NOT NULL auto_increment,
+ -> `tutorial_title` varchar(100) NOT NULL default '',
+ -> `tutorial_author` varchar(40) NOT NULL default '',
+ -> `submission_date` date default NULL,
+ -> PRIMARY KEY (`tutorial_id`),
+ -> UNIQUE KEY `AUTHOR_INDEX` (`tutorial_author`)
+-> ) TYPE=MyISAM;
+Query OK, 0 rows affected (1.80 sec)
+Step 3:
+After executing step 2, you will clone a table in your database. If you want to copy data from old table, then you 
+can do it by using INSERT INTO... SELECT statement.
+SQL> INSERT INTO CLONE_TBL (tutorial_id,
+ -> tutorial_title,
+ -> tutorial_author,
+ -> submission_date)
+ -> SELECT tutorial_id,tutorial_title,
+ -> tutorial_author,submission_date,
+ -> FROM TUTORIALS_TBL;
+Query OK, 3 rows affected (0.07 sec)
+Records: 3 Duplicates: 0 Warnings: 0
+Finally, you will have exact clone table as you wanted to have.
+ 
+ 
+SQL Sub Queries
+ASubquery or Inner query or Nested query is a query within another SQL query and embedded within 
+the WHERE clause.
+A subquery is used to return data that will be used in the main query as a condition to further restrict the data to 
+be retrieved.
+Subqueries can be used with the SELECT, INSERT, UPDATE, and DELETE statements along with the operators 
+like =, <, >, >=, <=, IN, BETWEEN etc.
+There are a few rules that subqueries must follow:
+ Subqueries must be enclosed within parentheses.
+ A subquery can have only one column in the SELECT clause, unless multiple columns are in the main query 
+for the subquery to compare its selected columns.
+ An ORDER BY cannot be used in a subquery, although the main query can use an ORDER BY. The GROUP 
+BY can be used to perform the same function as the ORDER BY in a subquery.
+ Subqueries that return more than one row can only be used with multiple value operators, such as the IN 
+operator.
+ The SELECT list cannot include any references to values that evaluate to a BLOB, ARRAY, CLOB, or 
+NCLOB.
+ A subquery cannot be immediately enclosed in a set function.
+ The BETWEEN operator cannot be used with a subquery; however, the BETWEEN operator can be used 
+within the subquery.
+Subqueries with the SELECT Statement:
+Subqueries are most frequently used with the SELECT statement. The basic syntax is as follows:
+SELECT column_name [, column_name ]
+FROM table1 [, table2 ]
+WHERE column_name OPERATOR(SELECT column_name [, column_name ]
+ FROM table1 [, table2 ]
+ [WHERE])
+Example:
+Consider the CUSTOMERS table having the following records:
++----+----------+-----+-----------+----------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+-----------+----------+
+| 1 | Ramesh | 35 | Ahmedabad | 2000.00 |
+| 2 | Khilan | 25 | Delhi | 1500.00 |
+| 3 | kaushik | 23 | Kota | 2000.00 |
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
+| 6 | Komal | 22 | MP | 4500.00 |
+| 7 | Muffy | 24 | Indore | 10000.00 |
++----+----------+-----+-----------+----------+
+Now, let us check the following subquery with SELECT statement:
+SQL> SELECT *
+ FROM CUSTOMERS 
+ WHERE ID IN (SELECT ID 
+ FROM CUSTOMERS 
+WHERE SALARY > 4500) ;
+This would produce the following result:
++----+----------+-----+---------+----------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+---------+----------+
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 8500.00 |
+| 7 | Muffy | 24 | Indore | 10000.00 |
++----+----------+-----+---------+----------+
+Subqueries with the INSERT Statement:
+Subqueries also can be used with INSERT statements. The INSERT statement uses the data returned from the 
+subquery to insert into another table. The selected data in the subquery can be modified with any of the character, 
+date or number functions.
+The basic syntax is as follows:
+INSERT INTO table_name [ (column1 [, column2 ]) ]
+ SELECT [ *|column1 [, column2 ]
+ FROM table1 [, table2 ]
+ [ WHERE VALUE OPERATOR ]
+Example:
+Consider a table CUSTOMERS_BKP with similar structure as CUSTOMERS table. Now to copy complete 
+CUSTOMERS table into CUSTOMERS_BKP, following is the syntax:
+SQL> INSERT INTO CUSTOMERS_BKP
+ SELECT * FROM CUSTOMERS 
+ 
+ 
+ WHERE ID IN (SELECT ID 
+ FROM CUSTOMERS) ;
+Subqueries with the UPDATE Statement:
+The subquery can be used in conjunction with the UPDATE statement. Either single or multiple columns in a table 
+can be updated when using a subquery with the UPDATE statement.
+The basic syntax is as follows:
+UPDATE table
+SET column_name = new_value
+[ WHERE OPERATOR [ VALUE ]
+ (SELECT COLUMN_NAME
+ FROM TABLE_NAME)
+ [ WHERE) ]
+Example:
+Assuming, we have CUSTOMERS_BKP table available which is backup of CUSTOMERS table.
+Following example updates SALARY by 0.25 times in CUSTOMERS table for all the customers whose AGE is 
+greater than or equal to 27:
+SQL> UPDATE CUSTOMERS
+ SET SALARY = SALARY * 0.25
+ WHERE AGE IN (SELECT AGE FROM CUSTOMERS_BKP
+ WHERE AGE >= 27 );
+This would impact two rows and finally CUSTOMERS table would have the following records:
++----+----------+-----+-----------+----------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+-----------+----------+
+| 1 | Ramesh | 35 | Ahmedabad | 125.00 |
+| 2 | Khilan | 25 | Delhi | 1500.00 |
+| 3 | kaushik | 23 | Kota | 2000.00 |
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 5 | Hardik | 27 | Bhopal | 2125.00 |
+| 6 | Komal | 22 | MP | 4500.00 |
+| 7 | Muffy | 24 | Indore | 10000.00 |
++----+----------+-----+-----------+----------+
+Subqueries with the DELETE Statement:
+The subquery can be used in conjunction with the DELETE statement like with any other statements mentioned 
+above.
+The basic syntax is as follows:
+DELETE FROM TABLE_NAME
+[ WHERE OPERATOR [ VALUE ]
+ (SELECT COLUMN_NAME
+ FROM TABLE_NAME)
+ [ WHERE) ]
+ 
+ 
+Example:
+Assuming, we have CUSTOMERS_BKP table available which is backup of CUSTOMERS table.
+Following example deletes records from CUSTOMERS table for all the customers whose AGE is greater than or 
+equal to 27:
+SQL> DELETE FROM CUSTOMERS
+ WHERE AGE IN (SELECT AGE FROM CUSTOMERS_BKP
+ WHERE AGE > 27 );
+This would impact two rows and finally CUSTOMERS table would have the following records:
++----+----------+-----+---------+----------+
+| ID | NAME | AGE | ADDRESS | SALARY |
++----+----------+-----+---------+----------+
+| 2 | Khilan | 25 | Delhi | 1500.00 |
+| 3 | kaushik | 23 | Kota | 2000.00 |
+| 4 | Chaitali | 25 | Mumbai | 6500.00 |
+| 6 | Komal | 22 | MP | 4500.00 |
+| 7 | Muffy | 24 | Indore | 10000.00 |
++----+----------+-----+---------+----------+
